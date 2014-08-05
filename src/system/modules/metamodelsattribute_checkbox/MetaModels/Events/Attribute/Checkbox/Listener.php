@@ -89,8 +89,8 @@ class Listener
 
 			$extra = $toggle->getExtra();
 
-			$objIconEnabled = $objModel = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicon'));
-			$objIconDisabled = $objModel = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicondisabled'));
+			$objIconEnabled = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicon'));
+			$objIconDisabled = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicondisabled'));
 
 			if($event->getAttribute()->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path)
 			{
