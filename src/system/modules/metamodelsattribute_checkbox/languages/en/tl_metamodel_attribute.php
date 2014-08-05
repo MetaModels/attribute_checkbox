@@ -18,5 +18,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']    = 'Checkbox';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']              = array('Publishing checkbox', 'If this is selected, the items will appear in lists in the frontend (you will get the green "eye" for free.');
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']        = 'Checkbox';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']                  = array('Publishing checkbox', 'If this is selected, the items will appear in lists in the frontend (you will get the green "eye" for free.');
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']                 = array('Listview checkbox', 'If this is selected, you will get an additional icon in the backend listview.');
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon']             = array('Listview icon', 'The icon which is shown in the backend listview');
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']     = array('Listview icon disabled', 'The disbaled icon which is shown in the backend listview');
