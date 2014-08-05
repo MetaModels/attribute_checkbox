@@ -71,14 +71,14 @@ class Listener
 		$commands    = $view->getModelCommands();
 		$attribute   = $event->getAttribute();
 
-        if($event->getAttribute()->get('check_listview') == 1)
-        {
-            $commandName = 'listviewtoggle_' . $attribute->getColName();
-        }
-        else
-        {
-            $commandName = 'publishtoggle_' . $attribute->getColName();
-        }
+		if($event->getAttribute()->get('check_listview') == 1)
+		{
+			$commandName = 'listviewtoggle_' . $attribute->getColName();
+		}
+		else
+		{
+			$commandName = 'publishtoggle_' . $attribute->getColName();
+		}
 
 		if (!$commands->hasCommandNamed($commandName))
 		{
@@ -87,20 +87,20 @@ class Listener
 			$toggle->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][0]);
 			$toggle->setDescription($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][1]);
 
-            $extra = $toggle->getExtra();
+			$extra = $toggle->getExtra();
 
-            $objIconEnabled = $objModel = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicon'));
-            $objIconDisabled = $objModel = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicondisabled'));
+			$objIconEnabled = $objModel = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicon'));
+			$objIconDisabled = $objModel = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicondisabled'));
 
-            if($event->getAttribute()->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path)
-            {
-                $extra['icon'] = $objIconEnabled->path;
-                $extra['icon_disabled'] = $objIconDisabled->path;
-            }
-            else
-            {
-                $extra['icon'] = 'visible.gif';
-            }
+			if($event->getAttribute()->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path)
+			{
+				$extra['icon'] = $objIconEnabled->path;
+				$extra['icon_disabled'] = $objIconDisabled->path;
+			}
+			else
+			{
+				$extra['icon'] = 'visible.gif';
+			}
 
 			$toggle->setToggleProperty($attribute->getColName());
 
