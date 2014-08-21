@@ -51,7 +51,7 @@ class Listener
 	 */
 	public function handle(BuildAttributeEvent $event)
 	{
-		if (!(($event->getAttribute() instanceof Checkbox) && ($event->getAttribute()->get('check_publish') == 1)))
+		if (!(($event->getAttribute() instanceof Checkbox) && (($event->getAttribute()->get('check_publish') == 1) || ($event->getAttribute()->get('check_listview') == 1))))
 		{
 			return;
 		}
@@ -70,15 +70,38 @@ class Listener
 
 		$commands    = $view->getModelCommands();
 		$attribute   = $event->getAttribute();
-		$commandName = 'publishtoggle_' . $attribute->getColName();
+
+		if($event->getAttribute()->get('check_listview') == 1)
+		{
+			$commandName = 'listviewtoggle_' . $attribute->getColName();
+		}
+		else
+		{
+			$commandName = 'publishtoggle_' . $attribute->getColName();
+		}
+
 		if (!$commands->hasCommandNamed($commandName))
 		{
 			$toggle = new ToggleCommand();
 			$toggle->setName($commandName);
 			$toggle->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][0]);
 			$toggle->setDescription($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][1]);
-			$extra         = $toggle->getExtra();
-			$extra['icon'] = 'visible.gif';
+
+			$extra = $toggle->getExtra();
+
+			$objIconEnabled = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicon'));
+			$objIconDisabled = \FilesModel::findByUuid($event->getAttribute()->get('check_listviewicondisabled'));
+
+			if($event->getAttribute()->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path)
+			{
+				$extra['icon'] = $objIconEnabled->path;
+				$extra['icon_disabled'] = $objIconDisabled->path;
+			}
+			else
+			{
+				$extra['icon'] = 'visible.gif';
+			}
+
 			$toggle->setToggleProperty($attribute->getColName());
 
 			$commands->addCommand($toggle);
