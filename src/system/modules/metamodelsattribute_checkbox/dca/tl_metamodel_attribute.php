@@ -34,10 +34,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = array
 	'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'],
 	'exclude'               => true,
 	'inputType'             => 'checkbox',
-	'eval'                  => array
-	(
-		'tl_class' => 'w50'
-	),
+	'eval'                  => array('tl_class' => 'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listview'] = array
@@ -45,11 +42,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listview'] = array
 	'label'                 => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'],
 	'exclude'               => true,
 	'inputType'             => 'checkbox',
-	'eval'                  => array
-	(
-		'tl_class' => 'w50',
-		'submitOnChange' => true
-	),
+	'eval'                  => array('tl_class' => 'w50', 'submitOnChange' => true),
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicon'] = array
@@ -57,14 +50,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicon'] = a
 	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon'],
 	'exclude'                 => true,
 	'inputType'               => 'fileTree',
-	'eval'                    => array
-	(
-		'fieldType'           => 'radio',
-		'files'               => true,
-		'filesOnly'           => true,
-		'extensions'          => 'jpg,jpeg,gif,png,tif,tiff',
-		'tl_class'            => 'clr'
-	)
+	'eval'                    => array('fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff', 'tl_class' => 'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicondisabled'] = array
@@ -72,12 +58,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicondisabl
 	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled'],
 	'exclude'                 => true,
 	'inputType'               => 'fileTree',
-	'eval'                    => array
-	(
-		'fieldType'           => 'radio',
-		'files'               => true,
-		'filesOnly'           => true,
-		'extensions'          => 'jpg,jpeg,gif,png,tif,tiff',
-		'tl_class'            => 'clr'
-    )
+	'eval'                    => array('fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff', 'tl_class' => 'clr'),
 );
