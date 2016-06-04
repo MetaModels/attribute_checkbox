@@ -15,6 +15,8 @@ $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']['0']            
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']['1']             = 'Ist diese Option gesetzt, wird ein zusätzliches Icon in der Listenanzeige des Backends eingefügt.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon']['0']         = 'Icon der Listenanzeige';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon']['1']         = 'Das Icon wird in der Listenanzeige des Backends gezeigt.';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['0']              = 'Umkehren';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['1']              = 'Ist diese Option gesetzt, wird das verhalten der Veröffentlichung gekehrt (z.B. Content Elemente).';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']['0'] = 'Icon in der Listenansicht nicht anzeigen.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']['1'] = 'Icon in der Listenansicht nicht anzeigen.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['0']              = 'Veröffentlichen';

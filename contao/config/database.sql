@@ -14,6 +14,7 @@
 CREATE TABLE `tl_metamodel_attribute` (
   `check_publish` char(1) NOT NULL default '',
   `check_listview` char(1) NOT NULL default '',
+  `check_inverse` char(1) NOT NULL default '',
   `check_listviewicon` blob NULL,
   `check_listviewicondisabled` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

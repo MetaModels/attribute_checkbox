@@ -14,6 +14,7 @@
  * @author     Christopher Boelter <c.boelter@cogizz.de>
  * @author     David Maack <maack@men-at-work.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  The MetaModels team.
  * @license    LGPL.
  * @filesource
@@ -57,6 +58,7 @@ class Checkbox extends BaseSimple
     {
         return array_merge(parent::getAttributeSettingNames(), array(
             'check_publish',
+            'check_inverse',
             'check_listview',
             'check_listviewicon',
             'check_listviewicondisabled',

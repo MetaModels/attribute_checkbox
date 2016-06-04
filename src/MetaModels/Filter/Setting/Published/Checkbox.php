@@ -11,6 +11,7 @@
  * @subpackage AttributeCheckbox
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Andreas Isaak <info@andreas-isaak.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  The MetaModels team.
  * @license    LGPL.
  * @filesource
@@ -43,12 +44,20 @@ class Checkbox extends Simple
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+
+        $publishedValue = 1;
+        if (intval($objAttribute->get('check_publish')) === 1
+            && intval($objAttribute->get('check_inverse')) === 1
+        ) {
+            $publishedValue = '';
+        }
+
         if ($objAttribute) {
             $objFilterRule = new SimpleQuery(sprintf(
                 'SELECT id FROM %s WHERE %s=?',
                 $this->getMetaModel()->getTableName(),
                 $objAttribute->getColName()
-            ), array(1));
+            ), array($publishedValue));
             $objFilter->addFilterRule($objFilterRule);
 
             return;

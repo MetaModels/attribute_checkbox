@@ -10,6 +10,7 @@
  * @package     MetaModels
  * @subpackage  AttributeCheckbox
  * @author      Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author      Sven Baumann <baumann.sv@gmail.com>
  * @copyright   The MetaModels team.
  * @license     LGPL.
  * @filesource
@@ -20,6 +21,9 @@ $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']       =
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][0]              = 'Publishing checkbox';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][1]              =
     'If this is selected, the items will appear in lists in the frontend (you will get the green "eye" for free.';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse'][0]              = 'Inverse';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse'][1]              =
+    'If this is selected, this inverse the published mode (for example content elements).';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'][0]             = 'Listview checkbox';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'][1]             =
     'If this is selected, you will get an additional icon in the backend listview.';
