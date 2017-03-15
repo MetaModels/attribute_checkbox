@@ -93,26 +93,19 @@ class Checkbox extends BaseSimple
      */
     public function getFilterOptions($idList, $usedOnly, &$arrCount = null)
     {
-        $values = parent::getFilterOptions($idList, $usedOnly, $arrCount);
-        // If not used only or id list, we need to override the handling now.
-        if (!($idList || $usedOnly)) {
-            $values = ['', '1'];
-            if (null !== $arrCount) {
-                $arrCount[''] = 0;
-                $arrCount[1]  = 0;
-                $colName      = $this->getColName();
-                $rows         = $this->getDatabase()->execute(
-                    sprintf(
-                        'SELECT %1$s, COUNT(%1$s) as mm_count FROM %2$s GROUP BY %1$s ORDER BY %1$s',
-                        $colName,
-                        $this->getMetaModel()->getTableName()
-                    )
-                );
-                while ($rows->next()) {
-                    $arrCount[$rows->$colName] = $rows->mm_count;
-                }
-            }
+        
+        $arrOptions = parent::getFilterOptions($idList, $usedOnly, $arrCount);
+        foreach ($arrOptions as $key => $value) {
+           if ($key == '1') {
+              $arrOptions['1'] = $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['value_1'];
+           }else{
+            unset($arrOptions[$key]);
+            $arrOptions['0'] = $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['value_0'];
+           }
         }
+           
+        return $arrOptions;
+      }
 
         // Finally use the correct language strings.
         $mapped = [];
