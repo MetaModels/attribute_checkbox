@@ -105,16 +105,7 @@ class Checkbox extends BaseSimple
         }
            
         return $arrOptions;
-      }
 
-        // Finally use the correct language strings.
-        $mapped = [];
-        foreach ($values as $value) {
-            $mapped[(string) $value] =
-                $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['value_' . ($value ?: '0')];
-        }
-
-        return $mapped;
     }
 
     /**
