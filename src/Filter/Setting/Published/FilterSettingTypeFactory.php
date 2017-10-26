@@ -13,8 +13,8 @@
  * @package    MetaModels
  * @subpackage AttributeCheckbox
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2017 The MetaModels team.
  * @author     David Molineus <david.molineus@netzmacht.de
+ * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -36,8 +36,8 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
         parent::__construct();
         $this
             ->setTypeName('checkbox_published')
-            ->setTypeIcon('system/modules/metamodels/html/visible.png')
-            ->setTypeClass('MetaModels\Filter\Setting\Published\Checkbox')
+            ->setTypeIcon('bundles/metamodelscore/visible.png')
+            ->setTypeClass(Checkbox::class)
             ->allowAttributeTypes('checkbox');
     }
 }
