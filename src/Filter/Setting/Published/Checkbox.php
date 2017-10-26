@@ -23,6 +23,9 @@
 
 namespace MetaModels\Attribute\Checkbox\Filter\Setting\Published;
 
+use Contao\System;
+use Doctrine\DBAL\Connection;
+use MetaModels\Filter\Setting\ICollection;
 use MetaModels\Filter\Setting\Simple;
 use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\SimpleQuery;
@@ -33,6 +36,38 @@ use MetaModels\Filter\Rules\StaticIdList;
  */
 class Checkbox extends Simple
 {
+    /**
+     * Database connection.
+     *
+     * @var Connection
+     */
+    private $connection;
+
+    /**
+     * Constructor - initialize the object and store the parameters.
+     *
+     * @param ICollection $collection The parenting filter settings object.
+     *
+     * @param array       $data       The attributes for this filter setting.
+     *
+     * @param Connection  $connection The database connection.
+     */
+    public function __construct(ICollection $collection, array $data, Connection $connection = null)
+    {
+        parent::__construct($collection, $data);
+
+        if (null === $connection) {
+            @trigger_error(
+                'You should pass a doctrine database connection to "' . __METHOD__ . '".',
+                E_USER_DEPRECATED
+            );
+
+            $connection = System::getContainer()->get('database_connection');
+        }
+
+        $this->connection = $connection;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -60,7 +95,8 @@ class Checkbox extends Simple
             $objFilterRule = new SimpleQuery(sprintf(
                 'SELECT id FROM %s WHERE %s=?',
                 $this->getMetaModel()->getTableName(),
-                $objAttribute->getColName()
+                $objAttribute->getColName(),
+                $this->connection
             ), array($publishedValue));
             $objFilter->addFilterRule($objFilterRule);
 

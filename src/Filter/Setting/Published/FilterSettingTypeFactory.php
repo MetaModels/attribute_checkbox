@@ -21,6 +21,7 @@
 
 namespace MetaModels\Attribute\Checkbox\Filter\Setting\Published;
 
+use Doctrine\DBAL\Connection;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 
 /**
@@ -29,15 +30,39 @@ use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
 {
     /**
-     * {@inheritDoc}
+     * Database connection.
+     *
+     * @var Connection
      */
-    public function __construct()
+    private $connection;
+
+    /**
+     * Create a new instance.
+     *
+     * @param Connection $connection Databse connection.
+     *
+     */
+    public function __construct(Connection $connection)
     {
         parent::__construct();
+
         $this
             ->setTypeName('checkbox_published')
             ->setTypeIcon('bundles/metamodelscore/visible.png')
             ->setTypeClass(Checkbox::class)
             ->allowAttributeTypes('checkbox');
+
+        $this->connection = $connection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createInstance($information, $filterSettings)
+    {
+        // $this->typeClass is private and there is no getter...
+        $typeClass = Checkbox::class;
+
+        return new $typeClass($filterSettings, $information, $this->connection);
     }
 }
