@@ -21,22 +21,24 @@
 
 namespace MetaModels\Attribute\Checkbox;
 
-use MetaModels\Attribute\AbstractAttributeTypeFactory;
+use Doctrine\DBAL\Connection;
+use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;
+use MetaModels\Helper\TableManipulator;
 
 /**
  * Attribute type factory for checkbox attributes.
  */
-class AttributeTypeFactory extends AbstractAttributeTypeFactory
+class AttributeTypeFactory extends AbstractSimpleAttributeTypeFactory
 {
     /**
      * {@inheritDoc}
      */
-    public function __construct()
+    public function __construct(Connection $connection, TableManipulator $tableManipulator)
     {
-        parent::__construct();
+        parent::__construct($connection, $tableManipulator);
 
         $this->typeName  = 'checkbox';
-        $this->typeIcon  = 'system/modules/metamodelsattribute_checkbox/html/checkbox.png';
+        $this->typeIcon  = 'bundles/metamodelsattributecheckbox/checkbox.png';
         $this->typeClass = 'MetaModels\Attribute\Checkbox\Checkbox';
     }
 }
