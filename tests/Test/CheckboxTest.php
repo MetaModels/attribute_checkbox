@@ -21,13 +21,17 @@
 
 namespace MetaModels\Test\Attribute\Checkbox;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement;
 use MetaModels\Attribute\Checkbox\Checkbox;
+use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Checkbox.
  */
-class CheckboxTest extends \PHPUnit_Framework_TestCase
+class CheckboxTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -60,13 +64,84 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Mock the Contao database.
+     *
+     * @param string|null   expectedQuery The query to expect.
+     *
+     * @param callable|null $callback     Callback which gets mocked statement passed.
+     *
+     * @return Connection|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function mockConnection(callable $callback = null, $expectedQuery = null, $queryMethod = 'prepare')
+    {
+        $mockDb = $this
+            ->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $statement = $this
+            ->getMockBuilder(Statement::class)
+            ->getMock();
+
+        $mockDb->method('prepare')->willReturn($statement);
+        $mockDb->method('query')->willReturn($statement);
+
+        if ($callback) {
+            call_user_func($callback, $statement);
+        }
+
+        if (!$expectedQuery || $expectedQuery === 'prepare') {
+            $mockDb->expects($this->never())->method('query');
+        }
+
+        if (!$expectedQuery || $expectedQuery === 'query') {
+            $mockDb->expects($this->never())->method('prepare');
+        }
+
+        if (!$expectedQuery) {
+            return $mockDb;
+        }
+
+        $mockDb
+            ->expects($this->once())
+            ->method($queryMethod)
+            ->with($expectedQuery);
+
+        if ($queryMethod === 'prepare') {
+            $statement
+                ->expects($this->once())
+                ->method('execute')
+                ->willReturn(true);
+        }
+
+        return $mockDb;
+    }
+
+    /**
+     * Mock the table manipulator.
+     *
+     * @param Connection $connection The database connection mock.
+     *
+     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function mockTableManipulator(Connection $connection)
+    {
+        return $this->getMockBuilder(TableManipulator::class)
+            ->setConstructorArgs([$connection, []])
+            ->getMock();
+    }
+
+    /**
      * Test that the attribute can be instantiated.
      *
      * @return void
      */
     public function testInstantiation()
     {
-        $text = new Checkbox($this->mockMetaModel('en', 'en'));
+        $connection  = $this->mockConnection();
+        $manipulator = $this->mockTableManipulator($connection);
+
+        $text = new Checkbox($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
         $this->assertInstanceOf('MetaModels\Attribute\Checkbox\Checkbox', $text);
     }
 
@@ -101,32 +176,21 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
      */
     public function testSearchFor($expectedParameter, $searchValue)
     {
-        $resultSet = $this
-            ->getMockBuilder('stdClass')
-            ->setMethods(['fetchEach'])
-            ->getMockForAbstractClass();
-        $resultSet->expects($this->once())->method('fetchEach')->with('id')->willReturn(['success']);
-
-        $dataBase = $this
-            ->getMockBuilder('stdClass')
-            ->setMethods(['prepare', 'execute'])
-            ->getMockForAbstractClass();
-        $dataBase
-            ->expects($this->once())
-            ->method('prepare')
-            ->with('SELECT id FROM mm_unittest WHERE testcol = ?')
-            ->willReturn($dataBase);
-        $dataBase
-            ->expects($this->once())
-            ->method('execute')
-            ->with($expectedParameter)
-            ->willReturn($resultSet);
-        $container = $this->getMockForAbstractClass('MetaModels\IMetaModelsServiceContainer');
-        $container->expects($this->once())->method('getDatabase')->willReturn($dataBase);
         $metaModel = $this->mockMetaModel('en', 'en');
-        $metaModel->expects($this->once())->method('getServiceContainer')->willReturn($container);
 
-        $checkbox = new Checkbox($metaModel, ['colname' => 'testcol']);
+        $connection  = $this->mockConnection(
+            function ($statement) {
+                $statement
+                    ->expects($this->once())
+                    ->method('fetchAll')
+                    ->with(\PDO::FETCH_COLUMN, 'id')
+                    ->willReturn(['success']);
+            },
+            'SELECT id FROM mm_unittest WHERE testcol = :value'
+        );
+        $manipulator = $this->mockTableManipulator($connection);
+
+        $checkbox = new Checkbox($metaModel, ['colname' => 'testcol'], $connection, $manipulator);
 
         $this->assertSame(['success'], $checkbox->searchFor($searchValue));
     }
@@ -161,7 +225,10 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
      */
     public function testSerialize($expected, $value)
     {
-        $checkbox = new Checkbox($this->mockMetaModel('en', 'en'));
+        $connection  = $this->mockConnection();
+        $manipulator = $this->mockTableManipulator($connection);
+
+        $checkbox = new Checkbox($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
         $this->assertEquals($expected, $checkbox->serializeData($value));
         $this->assertSame($expected, $checkbox->serializeData($value));
     }
@@ -196,7 +263,10 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnserialize($expected, $value)
     {
-        $checkbox = new Checkbox($this->mockMetaModel('en', 'en'));
+        $connection  = $this->mockConnection();
+        $manipulator = $this->mockTableManipulator($connection);
+
+        $checkbox = new Checkbox($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
         $this->assertEquals($expected, $checkbox->unserializeData($value));
         $this->assertSame($expected, $checkbox->unserializeData($value));
     }
