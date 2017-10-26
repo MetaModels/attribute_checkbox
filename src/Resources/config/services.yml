@@ -1,5 +1,5 @@
 services:
-    metamodels.attribute_numeric.factory:
+    metamodels.attribute_checkbox.factory:
         class: MetaModels\Attribute\Checkbox\AttributeTypeFactory
         arguments:
             - '@database_connection'
