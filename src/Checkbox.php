@@ -26,7 +26,6 @@
 
 namespace MetaModels\Attribute\Checkbox;
 
-use Contao\Database;
 use MetaModels\Attribute\BaseSimple;
 
 /**
@@ -34,13 +33,6 @@ use MetaModels\Attribute\BaseSimple;
  */
 class Checkbox extends BaseSimple
 {
-    /**
-     * The database.
-     *
-     * @var Database
-     */
-    protected $database;
-
     /**
      * Determine if the attribute is for publish usage.
      *
@@ -102,15 +94,15 @@ class Checkbox extends BaseSimple
                 $arrCount[''] = 0;
                 $arrCount[1]  = 0;
                 $colName      = $this->getColName();
-                $rows         = $this->getDatabase()->execute(
+                $statement    = $this->connection->query(
                     sprintf(
                         'SELECT %1$s, COUNT(%1$s) as mm_count FROM %2$s GROUP BY %1$s ORDER BY %1$s',
                         $colName,
                         $this->getMetaModel()->getTableName()
                     )
                 );
-                while ($rows->next()) {
-                    $arrCount[$rows->$colName] = $rows->mm_count;
+                while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
+                    $arrCount[$row->$colName] = $row->mm_count;
                 }
             }
         }
@@ -134,17 +126,18 @@ class Checkbox extends BaseSimple
      */
     public function searchFor($strPattern)
     {
-        $objQuery = $this->getDatabase()
+        $statement = $this->connection
             ->prepare(
                 sprintf(
-                    'SELECT id FROM %s WHERE %s = ?',
+                    'SELECT id FROM %s WHERE %s = :value',
                     $this->getMetaModel()->getTableName(),
                     $this->getColName()
                 )
-            )
-            ->execute((bool) $strPattern ? '1' : '');
+            );
 
-        $arrIds = $objQuery->fetchEach('id');
+        $statement->execute(['value' => (bool) $strPattern ? '1' : '']);
+
+        $arrIds = $statement->fetchAll(\PDO::FETCH_COLUMN, 'id');
         return $arrIds;
     }
 
@@ -170,19 +163,5 @@ class Checkbox extends BaseSimple
     public function serializeData($value)
     {
         return (bool) $value ? '1' : '';
-    }
-
-    /**
-     * Retrieve the database.
-     *
-     * @return Database
-     */
-    protected function getDatabase()
-    {
-        if (null !== $this->database) {
-            return $this->database;
-        }
-
-        return $this->database = $this->getMetaModel()->getServiceContainer()->getDatabase();
     }
 }
