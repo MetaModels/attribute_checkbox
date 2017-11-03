@@ -1,8 +1,15 @@
 services:
     metamodels.attribute_checkbox.factory:
-        class: MetaModels\AttributeCheckboxBundle\AttributeTypeFactory
+        class: MetaModels\AttributeCheckboxBundle\Attribute\AttributeTypeFactory
         arguments:
             - '@database_connection'
             - '@metamodels.table_manipulator'
         tags:
           - { name: metamodels.attribute_factory }
+
+    metamodels.attribute_checkbox.published_filtersetting.factory:
+        class: MetaModels\AttributeCheckboxBundle\FilterSetting\FilterSettingTypeFactory
+        arguments:
+          - '@database_connection'
+        tags:
+          - { name: metamodels.filter_factory }
