@@ -55,20 +55,27 @@ class MetaModelsAttributeCheckboxExtensionTest extends TestCase
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('setDefinition')
-            ->with(
-                'metamodels.attribute_checkbox.factory',
-                $this->callback(
-                    function ($value) {
-                        /** @var Definition $value */
-                        $this->assertInstanceOf(Definition::class, $value);
-                        $this->assertEquals(AttributeTypeFactory::class, $value->getClass());
-                        $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
+            ->withConsecutive(
+                [$this->anything(), $this->anything()],
+                [$this->anything(), $this->anything()],
+                [$this->anything(), $this->anything()],
+                [$this->anything(), $this->anything()],
+                [
+                    'metamodels.attribute_checkbox.factory',
+                    $this->callback(
+                        function ($value) {
+                            /** @var Definition $value */
+                            $this->assertInstanceOf(Definition::class, $value);
+                            $this->assertEquals(AttributeTypeFactory::class, $value->getClass());
+                            $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
 
-                        return true;
-                    }
-                )
+                            return true;
+                        }
+                    )
+                ],
+                [$this->anything(), $this->anything()]
             );
 
         $extension = new MetaModelsAttributeCheckboxExtension();

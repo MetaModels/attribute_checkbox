@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\AttributeCheckboxBundle\Test;
+namespace MetaModels\AttributeCheckboxBundle\Test\Attribute;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
