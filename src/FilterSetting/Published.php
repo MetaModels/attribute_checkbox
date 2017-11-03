@@ -21,7 +21,7 @@
  * @filesource
  */
 
-namespace MetaModels\AttributeCheckboxBundle\Filter\Setting\Published;
+namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
 use Contao\System;
 use Doctrine\DBAL\Connection;
@@ -34,7 +34,7 @@ use MetaModels\Filter\Rules\StaticIdList;
 /**
  * Published setting handler for checkboxes.
  */
-class Checkbox extends Simple
+class Published extends Simple
 {
     /**
      * Database connection.

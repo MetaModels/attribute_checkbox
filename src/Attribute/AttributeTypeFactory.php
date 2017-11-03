@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\AttributeCheckboxBundle;
+namespace MetaModels\AttributeCheckboxBundle\Attribute;
 
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;

@@ -20,7 +20,7 @@
 
 namespace MetaModels\AttributeCheckboxBundle\Test\DependencyInjection;
 
-use MetaModels\AttributeCheckboxBundle\AttributeTypeFactory;
+use MetaModels\AttributeCheckboxBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeCheckboxBundle\DependencyInjection\MetaModelsAttributeCheckboxExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

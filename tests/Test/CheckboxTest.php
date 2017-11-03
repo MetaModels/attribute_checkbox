@@ -23,7 +23,7 @@ namespace MetaModels\AttributeCheckboxBundle\Test;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
-use MetaModels\AttributeCheckboxBundle\Checkbox;
+use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;

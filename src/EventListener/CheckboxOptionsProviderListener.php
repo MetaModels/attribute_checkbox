@@ -20,16 +20,16 @@
  * @filesource
  */
 
-namespace MetaModels\AttributeCheckboxBundle\Events;
+namespace MetaModels\AttributeCheckboxBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
-use MetaModels\AttributeCheckboxBundle\Checkbox;
+use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\DcGeneral\Data\Model;
 
 /**
  * This class retrieves the options of an attribute within a MetaModel unless someone else already provided them.
  */
-class CheckboxOptionsProvider
+class CheckboxOptionsProviderListener
 {
     /**
      * Retrieve the property options.

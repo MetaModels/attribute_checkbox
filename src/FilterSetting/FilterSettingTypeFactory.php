@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\AttributeCheckboxBundle\Filter\Setting\Published;
+namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
 use Doctrine\DBAL\Connection;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
@@ -48,7 +48,7 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
         $this
             ->setTypeName('checkbox_published')
             ->setTypeIcon('bundles/metamodelscore/visible.png')
-            ->setTypeClass(Checkbox::class)
+            ->setTypeClass(Published::class)
             ->allowAttributeTypes('checkbox');
 
         $this->connection = $connection;
@@ -60,7 +60,7 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
     public function createInstance($information, $filterSettings)
     {
         // $this->typeClass is private and there is no getter...
-        $typeClass = Checkbox::class;
+        $typeClass = Published::class;
 
         return new $typeClass($filterSettings, $information, $this->connection);
     }
