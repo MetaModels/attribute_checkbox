@@ -46,16 +46,16 @@
   },
   "autoload": {
     "psr-4": {
-      "MetaModels\\Attribute\\Checkbox\\": "src"
+      "MetaModels\\AttributeCheckboxBundle\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "MetaModels\\Test\\Attribute\\Checkbox\\": "tests/Test"
+      "MetaModels\\AttributeCheckboxBundle\\Test\\": "tests/Test"
     }
   },
   "extra": {
-    "contao-manager-plugin": "MetaModels\\Attribute\\Checkbox\\ContaoManager\\Plugin",
+    "contao-manager-plugin": "MetaModels\\AttributeCheckboxBundle\\ContaoManager\\Plugin",
     "contao": {
       "transifex": {
         "project": "metamodels",

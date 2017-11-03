@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox\Events;
+namespace MetaModels\AttributeCheckboxBundle\Events;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;

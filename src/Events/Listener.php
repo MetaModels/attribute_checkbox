@@ -21,13 +21,13 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox\Events;
+namespace MetaModels\AttributeCheckboxBundle\Events;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
-use MetaModels\Attribute\Checkbox\Checkbox;
+use MetaModels\AttributeCheckboxBundle\Checkbox;
 use MetaModels\DcGeneral\Events\BaseSubscriber;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 

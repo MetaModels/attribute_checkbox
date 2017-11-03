@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox\Filter\Setting\Published;
+namespace MetaModels\AttributeCheckboxBundle\Filter\Setting\Published;
 
 use Doctrine\DBAL\Connection;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;

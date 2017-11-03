@@ -18,7 +18,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox;
+namespace MetaModels\AttributeCheckboxBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

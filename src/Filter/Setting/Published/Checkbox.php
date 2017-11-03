@@ -21,7 +21,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox\Filter\Setting\Published;
+namespace MetaModels\AttributeCheckboxBundle\Filter\Setting\Published;
 
 use Contao\System;
 use Doctrine\DBAL\Connection;

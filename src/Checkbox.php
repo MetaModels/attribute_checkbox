@@ -24,7 +24,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox;
+namespace MetaModels\AttributeCheckboxBundle;
 
 use MetaModels\Attribute\BaseSimple;
 

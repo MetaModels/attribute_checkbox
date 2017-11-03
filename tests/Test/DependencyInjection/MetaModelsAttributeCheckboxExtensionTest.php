@@ -18,10 +18,10 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Checkbox\DependencyInjection;
+namespace MetaModels\AttributeCheckboxBundle\Test\DependencyInjection;
 
-use MetaModels\Attribute\Checkbox\AttributeTypeFactory;
-use MetaModels\Attribute\Checkbox\DependencyInjection\MetaModelsAttributeCheckboxExtension;
+use MetaModels\AttributeCheckboxBundle\AttributeTypeFactory;
+use MetaModels\AttributeCheckboxBundle\DependencyInjection\MetaModelsAttributeCheckboxExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

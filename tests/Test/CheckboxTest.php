@@ -19,11 +19,11 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Checkbox;
+namespace MetaModels\AttributeCheckboxBundle\Test;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
-use MetaModels\Attribute\Checkbox\Checkbox;
+use MetaModels\AttributeCheckboxBundle\Checkbox;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;
@@ -142,7 +142,7 @@ class CheckboxTest extends TestCase
         $manipulator = $this->mockTableManipulator($connection);
 
         $text = new Checkbox($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
-        $this->assertInstanceOf('MetaModels\Attribute\Checkbox\Checkbox', $text);
+        $this->assertInstanceOf(Checkbox::class, $text);
     }
 
     /**

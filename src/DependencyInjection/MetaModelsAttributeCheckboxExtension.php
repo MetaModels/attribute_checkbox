@@ -18,7 +18,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox\DependencyInjection;
+namespace MetaModels\AttributeCheckboxBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

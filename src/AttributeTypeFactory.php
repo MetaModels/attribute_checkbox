@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox;
+namespace MetaModels\AttributeCheckboxBundle;
 
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;
@@ -39,6 +39,6 @@ class AttributeTypeFactory extends AbstractSimpleAttributeTypeFactory
 
         $this->typeName  = 'checkbox';
         $this->typeIcon  = 'bundles/metamodelsattributecheckbox/checkbox.png';
-        $this->typeClass = 'MetaModels\Attribute\Checkbox\Checkbox';
+        $this->typeClass = Checkbox::class;
     }
 }

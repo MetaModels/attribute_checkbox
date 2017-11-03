@@ -18,12 +18,12 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Checkbox\ContaoManager;
+namespace MetaModels\AttributeCheckboxBundle\Test\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-use MetaModels\Attribute\Checkbox\ContaoManager\Plugin;
+use MetaModels\AttributeCheckboxBundle\ContaoManager\Plugin;
 use MetaModels\CoreBundle\MetaModelsCoreBundle;
 use PHPUnit\Framework\TestCase;
 

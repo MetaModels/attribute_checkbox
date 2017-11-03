@@ -23,8 +23,8 @@
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyFalseCondition;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyTrueCondition;
-use MetaModels\Attribute\Checkbox\AttributeTypeFactory;
-use MetaModels\Attribute\Checkbox\Checkbox;
+use MetaModels\AttributeCheckboxBundle\AttributeTypeFactory;
+use MetaModels\AttributeCheckboxBundle\Checkbox;
 use MetaModels\Attribute\Events\CreateAttributeFactoryEvent;
 use MetaModels\Events\Attribute\Checkbox\Listener;
 use MetaModels\Events\Attribute\Checkbox\PublishedFilterSettingTypeRenderer;

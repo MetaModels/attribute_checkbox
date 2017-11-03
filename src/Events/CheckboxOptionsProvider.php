@@ -20,10 +20,10 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Checkbox\Events;
+namespace MetaModels\AttributeCheckboxBundle\Events;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
-use MetaModels\Attribute\Checkbox\Checkbox;
+use MetaModels\AttributeCheckboxBundle\Checkbox;
 use MetaModels\DcGeneral\Data\Model;
 
 /**
