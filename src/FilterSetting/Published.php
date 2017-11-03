@@ -57,10 +57,12 @@ class Published extends Simple
         parent::__construct($collection, $data);
 
         if (null === $connection) {
+            // @codingStandardsIgnoreStart Silencing errors is discouraged
             @trigger_error(
                 'You should pass a doctrine database connection to "' . __METHOD__ . '".',
                 E_USER_DEPRECATED
             );
+            // @codingStandardsIgnoreEnd
 
             $connection = System::getContainer()->get('database_connection');
         }

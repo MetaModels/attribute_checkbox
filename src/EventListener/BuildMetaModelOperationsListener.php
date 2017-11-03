@@ -21,31 +21,37 @@
  * @filesource
  */
 
-namespace MetaModels\AttributeCheckboxBundle\Events;
+namespace MetaModels\AttributeCheckboxBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
+use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
-use MetaModels\DcGeneral\Events\BaseSubscriber;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
  */
-class Listener extends BaseSubscriber
+class BuildMetaModelOperationsListener
 {
     /**
-     * {@inheritDoc}
+     * Request scope determinator.
+     *
+     * @var RequestScopeDeterminator
      */
-    public function registerEventsInDispatcher()
+    private $scopeMatcher;
+
+    /**
+     * CreatePropertyConditionListener constructor.
+     *
+     * @param RequestScopeDeterminator $scopeMatcher Request scope determinator.
+     */
+    public function __construct(RequestScopeDeterminator $scopeMatcher)
     {
-        $this
-            ->addListener(
-                BuildMetaModelOperationsEvent::NAME,
-                array($this, 'handle')
-            );
+        $this->scopeMatcher = $scopeMatcher;
     }
 
     /**
@@ -96,6 +102,25 @@ class Listener extends BaseSubscriber
     }
 
     /**
+     * Create the backend view definition.
+     *
+     * @param ContainerInterface $container The container.
+     *
+     * @return Contao2BackendViewDefinition
+     */
+    protected function createBackendViewDefinition($container)
+    {
+        if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
+            $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
+        } else {
+            $view = new Contao2BackendViewDefinition();
+            $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
+        }
+
+        return $view;
+    }
+
+    /**
      * Create the property conditions.
      *
      * @param BuildMetaModelOperationsEvent $event The event.
@@ -107,6 +132,10 @@ class Listener extends BaseSubscriber
      */
     public function handle(BuildMetaModelOperationsEvent $event)
     {
+        if (!$this->scopeMatcher->currentScopeIsBackend()) {
+            return;
+        }
+
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!($attribute instanceof Checkbox)
                 || !(($attribute->get('check_publish') == 1)
@@ -118,13 +147,7 @@ class Listener extends BaseSubscriber
 
             $toggle    = $this->buildCommand($attribute);
             $container = $event->getContainer();
-
-            if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
-                $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
-            } else {
-                $view = new Contao2BackendViewDefinition();
-                $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
-            }
+            $view      = $this->createBackendViewDefinition($container);
 
             $commands = $view->getModelCommands();
 

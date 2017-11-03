@@ -1,0 +1,47 @@
+services:
+    metamodels.attribute_checkbox.listener.build_metamodel_operations:
+        class: MetaModels\AttributeCheckboxBundle\EventListener\BuildMetaModelOperationsListener
+        arguments:
+          - "@cca.dc-general.scope-matcher"
+        tags:
+          - {
+              name: kernel.event_listener
+              event: 'metamodels.dc-general.events.metamodel.build.metamodel.operations'
+              method: handle
+            }
+
+    metamodels.attribute_checkbox.listener.published_filter_setting_renderer:
+        class: MetaModels\AttributeCheckboxBundle\EventListener\PublishedFilterSettingTypeRendererListener
+        arguments:
+          - "@metamodels.filter_setting_factory"
+          - "@event_dispatcher"
+          - "@metamodels.assets.icon_builder"
+          - "@cca.dc-general.scope-matcher"
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'dc-general.view.contao2backend.model-to-label',
+              method: modelToLabel
+            }
+
+    metamodels.attribute_checkbox.listener.checkbox_options_provider:
+        class: MetaModels\AttributeCheckboxBundle\EventListener\CheckboxOptionsProviderListener
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'dc-general.view.contao2backend.get-property-options',
+              method: getPropertyOptions,
+              priority: 200
+            }
+
+    metamodels.attribute_checkbox.listener.create_property_condition:
+        class: MetaModels\AttributeCheckboxBundle\EventListener\CreatePropertyConditionListener
+        arguments:
+          - "@cca.dc-general.scope-matcher"
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'metamodels.events.create-property-condition-event',
+              method: onCreatePropertyCondition
+              priority: -10
+            }
