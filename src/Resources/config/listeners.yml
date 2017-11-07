@@ -42,6 +42,6 @@ services:
           - {
               name: kernel.event_listener,
               event: 'metamodels.events.create-property-condition-event',
-              method: onCreatePropertyCondition
+              method: onCreatePropertyCondition,
               priority: -10
             }
