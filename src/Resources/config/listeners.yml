@@ -5,8 +5,8 @@ services:
           - "@cca.dc-general.scope-matcher"
         tags:
           - {
-              name: kernel.event_listener
-              event: 'metamodels.dc-general.events.metamodel.build.metamodel.operations'
+              name: kernel.event_listener,
+              event: 'metamodels.dc-general.events.metamodel.build.metamodel.operations',
               method: handle
             }
 
