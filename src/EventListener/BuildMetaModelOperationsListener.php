@@ -81,7 +81,7 @@ class BuildMetaModelOperationsListener
             )
         );
         $extra           = $toggle->getExtra();
-        $extra['icon']   = 'visible.gif';
+        $extra['icon']   = 'visible.svg';
         $objIconEnabled  = \FilesModel::findByUuid($attribute->get('check_listviewicon'));
         $objIconDisabled = \FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
@@ -89,7 +89,7 @@ class BuildMetaModelOperationsListener
             $extra['icon']          = $objIconEnabled->path;
             $extra['icon_disabled'] = $objIconDisabled->path;
         } else {
-            $extra['icon'] = 'visible.gif';
+            $extra['icon'] = 'visible.svg';
         }
 
         $toggle->setToggleProperty($attribute->getColName());
