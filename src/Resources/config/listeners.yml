@@ -26,6 +26,8 @@ services:
 
     metamodels.attribute_checkbox.listener.checkbox_options_provider:
         class: MetaModels\AttributeCheckboxBundle\EventListener\CheckboxOptionsProviderListener
+        arguments:
+          - "@cca.dc-general.scope-matcher"
         tags:
           - {
               name: kernel.event_listener,

@@ -22,15 +22,35 @@
 
 namespace MetaModels\AttributeCheckboxBundle\EventListener;
 
+use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\DcGeneral\Data\Model;
 
 /**
- * This class retrieves the options of an attribute within a MetaModel unless someone else already provided them.
+ * This class clears the options for checkbox attributes in the frontend.
+ *
+ * This works around the Contao frontend checkbox widget which renders multiple checkboxes when options are provided.
  */
 class CheckboxOptionsProviderListener
 {
+    /**
+     * Request scope determinator.
+     *
+     * @var RequestScopeDeterminator
+     */
+    private $scopeMatcher;
+
+    /**
+     * Create a new instance.
+     *
+     * @param RequestScopeDeterminator $scopeMatcher Request scope determinator.
+     */
+    public function __construct(RequestScopeDeterminator $scopeMatcher)
+    {
+        $this->scopeMatcher = $scopeMatcher;
+    }
+
     /**
      * Retrieve the property options.
      *
@@ -38,8 +58,12 @@ class CheckboxOptionsProviderListener
      *
      * @return void
      */
-    public static function getPropertyOptions(GetPropertyOptionsEvent $event)
+    public function getPropertyOptions(GetPropertyOptionsEvent $event)
     {
+        if (!$this->scopeMatcher->currentScopeIsFrontend()) {
+            return;
+        }
+
         $model = $event->getModel();
         if (!($model instanceof Model)) {
             return;
