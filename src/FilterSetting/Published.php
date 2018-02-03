@@ -94,13 +94,15 @@ class Published extends Simple
         }
 
         if ($objAttribute) {
-            $objFilterRule = new SimpleQuery(sprintf(
-                'SELECT id FROM %s WHERE %s=?',
-                $this->getMetaModel()->getTableName(),
-                $objAttribute->getColName(),
-                $this->connection
-            ), array($publishedValue));
-            $objFilter->addFilterRule($objFilterRule);
+            $objFilter->addFilterRule(SimpleQuery::createFromQueryBuilder(
+                $this
+                    ->connection
+                    ->createQueryBuilder()
+                    ->select('id')
+                    ->from($this->getMetaModel()->getTableName())
+                    ->where($objAttribute->getColName() . '=:value')
+                    ->setParameter('value', $publishedValue)
+            ));
 
             return;
         }
