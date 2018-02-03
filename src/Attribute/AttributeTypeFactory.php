@@ -31,11 +31,15 @@ use MetaModels\Helper\TableManipulator;
 class AttributeTypeFactory implements IAttributeTypeFactory
 {
     /**
+     * The database connection.
+     *
      * @var Connection
      */
     private $connection;
 
     /**
+     * The table manipulator.
+     *
      * @var TableManipulator
      */
     private $tableManipulator;
