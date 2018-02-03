@@ -22,23 +22,78 @@
 namespace MetaModels\AttributeCheckboxBundle\Attribute;
 
 use Doctrine\DBAL\Connection;
-use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;
+use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
 
 /**
  * Attribute type factory for checkbox attributes.
  */
-class AttributeTypeFactory extends AbstractSimpleAttributeTypeFactory
+class AttributeTypeFactory implements IAttributeTypeFactory
 {
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    /**
+     * @var TableManipulator
+     */
+    private $tableManipulator;
+
     /**
      * {@inheritDoc}
      */
     public function __construct(Connection $connection, TableManipulator $tableManipulator)
     {
-        parent::__construct($connection, $tableManipulator);
+        $this->connection       = $connection;
+        $this->tableManipulator = $tableManipulator;
+    }
 
-        $this->typeName  = 'checkbox';
-        $this->typeIcon  = 'bundles/metamodelsattributecheckbox/checkbox.png';
-        $this->typeClass = Checkbox::class;
+    /**
+     * {@inheritDoc}
+     */
+    public function getTypeName()
+    {
+        return 'checkbox';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTypeIcon()
+    {
+        return 'bundles/metamodelsattributecheckbox/checkbox.png';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createInstance($information, $metaModel)
+    {
+        return new Checkbox($metaModel, $information, $this->connection, $this->tableManipulator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isTranslatedType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isSimpleType()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isComplexType()
+    {
+        return false;
     }
 }
