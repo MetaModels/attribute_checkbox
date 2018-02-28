@@ -39,6 +39,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'],
     'exclude'   => true,
     'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => array
     (
         'tl_class' => 'w50'
@@ -50,6 +51,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listview'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'],
     'exclude'   => true,
     'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => array
     (
         'tl_class'       => 'w50',
@@ -62,6 +64,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_inverse'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse'],
     'exclude'   => true,
     'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => array
     (
         'tl_class'       => 'w50 cbx'
@@ -73,6 +76,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicon'] = a
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon'],
     'exclude'   => true,
     'inputType' => 'fileTree',
+    'sql'       => 'blob NULL',
     'eval'      => array
     (
         'fieldType'  => 'radio',
@@ -88,6 +92,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicondisabl
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled'],
     'exclude'   => true,
     'inputType' => 'fileTree',
+    'sql'       => 'blob NULL',
     'eval'      => array
     (
         'fieldType'  => 'radio',

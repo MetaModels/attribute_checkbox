@@ -34,6 +34,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_ignorepublishe
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished'],
     'exclude'   => true,
     'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => array
     (
         'alwaysSave' => true,
@@ -46,6 +47,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview']
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview'],
     'exclude'   => true,
     'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => array
     (
         'alwaysSave' => true,
