@@ -8,9 +8,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2015-07-11T04:10:50+02:00
+ * last-updated: 2018-02-06T02:49:29+01:00
  */
 
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['0']              = 'Обратный';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']['0']             = 'ListView чекбокс';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']['1']             = 'Если параметр выбран, вы получите дополнительный значок в панели управления listview.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon']['0']         = 'Значок ListView';
