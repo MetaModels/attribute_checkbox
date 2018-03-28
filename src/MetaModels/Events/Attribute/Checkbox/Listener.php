@@ -22,6 +22,7 @@
 
 namespace MetaModels\Events\Attribute\Checkbox;
 
+use Contao\FilesModel;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
@@ -75,8 +76,8 @@ class Listener extends BaseSubscriber
         );
         $extra           = $toggle->getExtra();
         $extra['icon']   = 'visible.gif';
-        $objIconEnabled  = \FilesModel::findByUuid($attribute->get('check_listviewicon'));
-        $objIconDisabled = \FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
+        $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
+        $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
         if ($attribute->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path) {
             $extra['icon']          = $objIconEnabled->path;
