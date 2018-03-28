@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2018-02-06T02:49:29+01:00
+ * last-updated: 2018-03-29T01:35:33+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['0']              = 'Invertierte Anzeigeoption';
@@ -21,5 +21,5 @@ $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']['0']
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']['1'] = 'Dieses Icon wird in der Listenanzeige des Backends für den Status "inaktiv" gezeigt.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['0']              = 'Veröffentlichen';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['1']              = 'Falls aktiviert, werden die Datensätze im Frontend angezeigt. Gleichzeitig ist in der Backend-Ansicht das Symbol \'Auge\' verfügbar, mit dem die Veröffentlichung eines Datensatzes ebenfalls gesteuert werden kann.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']         = 'Kontrollkästchen (Checkbox)';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']         = 'Checkbox';
 
