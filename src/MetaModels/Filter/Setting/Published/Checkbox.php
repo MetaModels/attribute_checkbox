@@ -49,8 +49,8 @@ class Checkbox extends Simple
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
         $publishedValue = 1;
-        if (intval($objAttribute->get('check_publish')) === 1
-            && intval($objAttribute->get('check_inverse')) === 1
+        if ((int) $objAttribute->get('check_publish') === 1
+            && (int) $objAttribute->get('check_inverse') === 1
         ) {
             $publishedValue = '';
         }
