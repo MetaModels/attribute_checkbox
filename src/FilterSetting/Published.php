@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -87,8 +87,8 @@ class Published extends Simple
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
         $publishedValue = 1;
-        if (intval($objAttribute->get('check_publish')) === 1
-            && intval($objAttribute->get('check_inverse')) === 1
+        if ((int) $objAttribute->get('check_publish') === 1
+            && (int) $objAttribute->get('check_inverse') === 1
         ) {
             $publishedValue = '';
         }
@@ -107,7 +107,7 @@ class Published extends Simple
             return;
         }
         // No attribute found, do not return anyting.
-        $objFilter->addFilterRule(new StaticIdList(array()));
+        $objFilter->addFilterRule(new StaticIdList([]));
     }
 
     /**
@@ -115,7 +115,7 @@ class Published extends Simple
      */
     public function getParameters()
     {
-        return ($this->get('check_ignorepublished')) ? array('ignore_published' . $this->get('id')) : array();
+        return ($this->get('check_ignorepublished')) ? ['ignore_published' . $this->get('id')] : [];
     }
 
     /**
@@ -127,22 +127,21 @@ class Published extends Simple
     public function getParameterDCA()
     {
         if (!$this->get('check_ignorepublished')) {
-            return array();
+            return [];
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
-        $arrLabel = array();
+        $arrLabel = [];
         foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
-            $arrLabel[] = sprintf($strLabel, $objAttribute->getName());
+            $arrLabel[] = \sprintf($strLabel, $objAttribute->getName());
         }
 
-        return array(
-            'ignore_published' . $this->get('id') => array
-            (
+        return [
+            'ignore_published' . $this->get('id') => [
                 'label'   => $arrLabel,
                 'inputType'    => 'checkbox',
-            )
-        );
+            ]
+        ];
     }
 }

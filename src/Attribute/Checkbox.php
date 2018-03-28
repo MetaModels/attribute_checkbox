@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -56,22 +56,25 @@ class Checkbox extends BaseSimple
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(parent::getAttributeSettingNames(), array(
-            'mandatory',
-            'check_publish',
-            'check_inverse',
-            'check_listview',
-            'check_listviewicon',
-            'check_listviewicondisabled',
-            'filterable',
-            'submitOnChange'
-        ));
+        return \array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'mandatory',
+                'check_publish',
+                'check_inverse',
+                'check_listview',
+                'check_listviewicon',
+                'check_listviewicondisabled',
+                'filterable',
+                'submitOnChange'
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef              = parent::getFieldDefinition($arrOverrides);
         $arrFieldDef['inputType'] = 'checkbox';
@@ -95,7 +98,7 @@ class Checkbox extends BaseSimple
                 $arrCount[1]  = 0;
                 $colName      = $this->getColName();
                 $statement    = $this->connection->query(
-                    sprintf(
+                    \sprintf(
                         'SELECT %1$s, COUNT(%1$s) as mm_count FROM %2$s GROUP BY %1$s ORDER BY %1$s',
                         $colName,
                         $this->getMetaModel()->getTableName()
@@ -128,7 +131,7 @@ class Checkbox extends BaseSimple
     {
         $statement = $this->connection
             ->prepare(
-                sprintf(
+                \sprintf(
                     'SELECT id FROM %s WHERE %s = :value',
                     $this->getMetaModel()->getTableName(),
                     $this->getColName()
