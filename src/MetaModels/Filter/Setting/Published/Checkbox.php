@@ -60,13 +60,13 @@ class Checkbox extends Simple
                 'SELECT id FROM %s WHERE %s=?',
                 $this->getMetaModel()->getTableName(),
                 $objAttribute->getColName()
-            ), array($publishedValue));
+            ), [$publishedValue]);
             $objFilter->addFilterRule($objFilterRule);
 
             return;
         }
         // No attribute found, do not return anyting.
-        $objFilter->addFilterRule(new StaticIdList(array()));
+        $objFilter->addFilterRule(new StaticIdList([]));
     }
 
     /**
@@ -74,7 +74,7 @@ class Checkbox extends Simple
      */
     public function getParameters()
     {
-        return ($this->get('check_ignorepublished')) ? array('ignore_published' . $this->get('id')) : array();
+        return ($this->get('check_ignorepublished')) ? ['ignore_published' . $this->get('id')] : [];
     }
 
     /**
@@ -86,22 +86,21 @@ class Checkbox extends Simple
     public function getParameterDCA()
     {
         if (!$this->get('check_ignorepublished')) {
-            return array();
+            return [];
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
-        $arrLabel = array();
+        $arrLabel = [];
         foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
             $arrLabel[] = \sprintf($strLabel, $objAttribute->getName());
         }
 
-        return array(
-            'ignore_published' . $this->get('id') => array
-            (
+        return [
+            'ignore_published' . $this->get('id') => [
                 'label'   => $arrLabel,
                 'inputType'    => 'checkbox',
-            )
-        );
+            ]
+        ];
     }
 }

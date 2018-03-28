@@ -43,7 +43,7 @@ class Listener extends BaseSubscriber
         $this
             ->addListener(
                 BuildMetaModelOperationsEvent::NAME,
-                array($this, 'handle')
+                [$this, 'handle']
             );
     }
 

@@ -63,22 +63,25 @@ class Checkbox extends BaseSimple
      */
     public function getAttributeSettingNames()
     {
-        return \array_merge(parent::getAttributeSettingNames(), array(
-            'mandatory',
-            'check_publish',
-            'check_inverse',
-            'check_listview',
-            'check_listviewicon',
-            'check_listviewicondisabled',
-            'filterable',
-            'submitOnChange'
-        ));
+        return \array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'mandatory',
+                'check_publish',
+                'check_inverse',
+                'check_listview',
+                'check_listviewicon',
+                'check_listviewicondisabled',
+                'filterable',
+                'submitOnChange'
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef              = parent::getFieldDefinition($arrOverrides);
         $arrFieldDef['inputType'] = 'checkbox';

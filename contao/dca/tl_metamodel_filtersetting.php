@@ -17,40 +17,36 @@
  * @author     David Maack <maack@men-at-work.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['checkbox_published extends _attribute_']['+config'] =
-    array
-    (
+    [
         'check_ignorepublished',
         'check_allowpreview'
-    );
+    ];
 
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_ignorepublished'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_ignorepublished'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => array
-    (
+    'eval'      => [
         'alwaysSave' => true,
         'tl_class'   => 'w50 m12',
-    ),
-);
+    ],
+];
 
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => array
-    (
+    'eval'      => [
         'alwaysSave' => true,
         'tl_class'   => 'w50 m12',
-    ),
-);
+    ],
+];
