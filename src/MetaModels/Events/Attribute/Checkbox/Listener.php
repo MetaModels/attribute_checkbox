@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +15,14 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Christopher Boelter <c.boelter@cogizz.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2016 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
 namespace MetaModels\Events\Attribute\Checkbox;
 
+use Contao\FilesModel;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
@@ -43,7 +44,7 @@ class Listener extends BaseSubscriber
         $this
             ->addListener(
                 BuildMetaModelOperationsEvent::NAME,
-                array($this, 'handle')
+                [$this, 'handle']
             );
     }
 
@@ -68,15 +69,15 @@ class Listener extends BaseSubscriber
         $toggle->setName($commandName);
         $toggle->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][0]);
         $toggle->setDescription(
-            sprintf(
+            \sprintf(
                 $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][1],
                 $attribute->getName()
             )
         );
         $extra           = $toggle->getExtra();
         $extra['icon']   = 'visible.gif';
-        $objIconEnabled  = \FilesModel::findByUuid($attribute->get('check_listviewicon'));
-        $objIconDisabled = \FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
+        $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
+        $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
         if ($attribute->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path) {
             $extra['icon']          = $objIconEnabled->path;
