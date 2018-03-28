@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2016 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -56,7 +56,7 @@ class Checkbox extends Simple
         }
 
         if ($objAttribute) {
-            $objFilterRule = new SimpleQuery(sprintf(
+            $objFilterRule = new SimpleQuery(\sprintf(
                 'SELECT id FROM %s WHERE %s=?',
                 $this->getMetaModel()->getTableName(),
                 $objAttribute->getColName()
@@ -93,7 +93,7 @@ class Checkbox extends Simple
 
         $arrLabel = array();
         foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
-            $arrLabel[] = sprintf($strLabel, $objAttribute->getName());
+            $arrLabel[] = \sprintf($strLabel, $objAttribute->getName());
         }
 
         return array(
