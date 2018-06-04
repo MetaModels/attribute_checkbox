@@ -51,14 +51,15 @@ class Listener extends BaseSubscriber
     /**
      * Build a single toggle operation.
      *
-     * @param Checkbox $attribute The checkbox attribute.
+     * @param Checkbox $attribute    The checkbox attribute.
+     * @param array    $propertyData The property date from the input screen property.
      *
      * @return ToggleCommandInterface
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    protected function buildCommand($attribute)
+    private function buildCommand($attribute, array $propertyData)
     {
         if ($attribute->get('check_listview') == 1) {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
@@ -92,6 +93,10 @@ class Listener extends BaseSubscriber
             $toggle->setInverse(true);
         }
 
+        if (!empty($propertyData['info']['eval']['readonly'])) {
+            $toggle->setDisabled(true);
+        }
+
         return $toggle;
     }
 
@@ -116,8 +121,9 @@ class Listener extends BaseSubscriber
                 continue;
             }
 
-            $toggle    = $this->buildCommand($attribute);
-            $container = $event->getContainer();
+            $propertyData = $event->getInputScreen()->getProperty($attribute->getColName());
+            $toggle       = $this->buildCommand($attribute, $propertyData);
+            $container    = $event->getContainer();
 
             if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
                 $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
