@@ -14,12 +14,10 @@
  * @subpackage AttributeCheckbox
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Andreas Isaak <info@andreas-isaak.de>
- * @author     David Maack <maack@men-at-work.de>
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2018 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
+ * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
