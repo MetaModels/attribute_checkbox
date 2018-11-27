@@ -58,7 +58,7 @@ class Published extends Simple
 
         if (null === $connection) {
             // @codingStandardsIgnoreStart Silencing errors is discouraged
-            @trigger_error(
+            @\trigger_error(
                 'You should pass a doctrine database connection to "' . __METHOD__ . '".',
                 E_USER_DEPRECATED
             );

@@ -87,7 +87,7 @@ class CheckboxTest extends TestCase
         $mockDb->method('query')->willReturn($statement);
 
         if ($callback) {
-            call_user_func($callback, $statement);
+            \call_user_func($callback, $statement);
         }
 
         if (!$expectedQuery || $expectedQuery === 'prepare') {

@@ -137,14 +137,14 @@ class BuildMetaModelOperationsListener
             return;
         }
 
-        $properties = array_map(function ($property) {
+        $properties = \array_map(function ($property) {
             return $property['col_name'];
         }, $event->getScreen()['properties']);
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!($attribute instanceof Checkbox)
                 || !(($attribute->get('check_publish') == 1)
                     || ($attribute->get('check_listview') == 1))
-                || (!in_array($attribute->getColName(), $properties))
+                || (!\in_array($attribute->getColName(), $properties))
             ) {
                 continue;
             }
