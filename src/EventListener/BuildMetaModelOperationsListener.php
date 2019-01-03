@@ -58,14 +58,15 @@ class BuildMetaModelOperationsListener
     /**
      * Build a single toggle operation.
      *
-     * @param Checkbox $attribute The checkbox attribute.
+     * @param Checkbox $attribute    The checkbox attribute.
+     * @param array    $propertyData The property date from the input screen property.
      *
      * @return ToggleCommandInterface
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    protected function buildCommand($attribute)
+    private function buildCommand($attribute, array $propertyData)
     {
         if ($attribute->get('check_listview') == 1) {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
@@ -97,6 +98,10 @@ class BuildMetaModelOperationsListener
 
         if ($attribute->get('check_inverse') == 1) {
             $toggle->setInverse(true);
+        }
+
+        if (!empty($propertyData['info']['eval']['readonly'])) {
+            $toggle->setDisabled(true);
         }
 
         return $toggle;

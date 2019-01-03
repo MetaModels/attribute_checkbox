@@ -21,16 +21,16 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @copyright  2012-2018 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0
+ * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['checkbox extends _simpleattribute_'] = [
-    '+advanced' => ['check_publish', 'check_listview']
+    '+advanced' => ['check_publish', 'check_inverse', 'check_listview']
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metasubpalettes'] = [
-    'check_listview' => ['check_inverse', 'check_listviewicon', 'check_listviewicondisabled']
+    'check_listview' => ['check_listviewicon', 'check_listviewicondisabled']
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
@@ -39,18 +39,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => [
-        'tl_class' => 'w50'
-    ],
-];
-
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listview'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
-        'tl_class'       => 'w50',
-        'submitOnChange' => true
+        'tl_class' => 'cbx w50'
     ],
 ];
 
@@ -60,7 +49,18 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_inverse'] = [
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => [
-        'tl_class' => 'w50 cbx'
+        'tl_class' => 'cbx w50'
+    ],
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listview'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'],
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
+    'eval'      => [
+        'tl_class'       => 'clr cbx w50',
+        'submitOnChange' => true
     ],
 ];
 
@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicon'] = [
         'files'      => true,
         'filesOnly'  => true,
         'extensions' => 'jpg,jpeg,gif,png,tif,tiff,svg',
-        'tl_class'   => 'clr'
+        'tl_class'   => 'clr w50'
     ]
 ];
 
@@ -88,6 +88,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listviewicondisabl
         'files'      => true,
         'filesOnly'  => true,
         'extensions' => 'jpg,jpeg,gif,png,tif,tiff,svg',
-        'tl_class'   => 'clr'
+        'tl_class'   => 'w50'
     ]
 ];
