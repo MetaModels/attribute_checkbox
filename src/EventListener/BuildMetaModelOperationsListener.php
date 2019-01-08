@@ -29,6 +29,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
+use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
@@ -99,7 +100,7 @@ class BuildMetaModelOperationsListener
             $toggle->setInverse(true);
         }
 
-        if (!empty($propertyData['info']['eval']['readonly'])) {
+        if (!empty($propertyData['eval']['readonly'])) {
             $toggle->setDisabled(true);
         }
 
@@ -140,20 +141,22 @@ class BuildMetaModelOperationsListener
         if (!$this->scopeMatcher->currentScopeIsBackend()) {
             return;
         }
-
+        $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(function ($property) {
             return $property['col_name'];
-        }, $event->getScreen()['properties']);
+        }, $allProps);
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
-            if (!($attribute instanceof Checkbox)
-                || !(($attribute->get('check_publish') == 1)
-                    || ($attribute->get('check_listview') == 1))
-                || (!\in_array($attribute->getColName(), $properties))
-            ) {
+            if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
             }
+            $info = [];
+            foreach ($allProps as $prop) {
+                if ($prop['col_name'] === $attribute->getColName()) {
+                    $info = $prop;
+                }
+            }
 
-            $toggle    = $this->buildCommand($attribute);
+            $toggle    = $this->buildCommand($attribute, $info);
             $container = $event->getContainer();
             $view      = $this->createBackendViewDefinition($container);
 
@@ -168,5 +171,20 @@ class BuildMetaModelOperationsListener
                 $commands->addCommand($toggle, $info);
             }
         }
+    }
+
+    /**
+     * Test if we want to add an operation for the attribute.
+     *
+     * @param IAttribute $attribute  The attribute to test.
+     * @param array      $properties The property names in the input screen.
+     *
+     * @return bool
+     */
+    private function wantToAdd($attribute, array $properties): bool
+    {
+        return ($attribute instanceof Checkbox)
+            && (($attribute->get('check_publish') === '1') || ($attribute->get('check_listview') === '1'))
+            && (\in_array($attribute->getColName(), $properties, true));
     }
 }
