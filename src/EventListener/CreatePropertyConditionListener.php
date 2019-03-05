@@ -27,8 +27,6 @@ use MetaModels\Events\CreatePropertyConditionEvent;
 
 /**
  * Listener adds property condition for the checkbox.
- *
- * @package MetaModels\AttributeCheckboxBundle\EventListener
  */
 class CreatePropertyConditionListener
 {
