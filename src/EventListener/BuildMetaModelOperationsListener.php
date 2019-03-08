@@ -143,7 +143,7 @@ class BuildMetaModelOperationsListener
         }
         $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(function ($property) {
-            return $property['col_name'];
+            return ($property['col_name'] ?? null);
         }, $allProps);
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!$this->wantToAdd($attribute, $properties)) {
