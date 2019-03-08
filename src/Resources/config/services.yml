@@ -11,5 +11,7 @@ services:
         class: MetaModels\AttributeCheckboxBundle\FilterSetting\FilterSettingTypeFactory
         arguments:
           - '@database_connection'
+          - '@event_dispatcher'
+          - '@MetaModels\Filter\FilterUrlBuilder'
         tags:
           - { name: metamodels.filter_factory }

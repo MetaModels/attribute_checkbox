@@ -24,11 +24,13 @@ namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
 use Contao\System;
 use Doctrine\DBAL\Connection;
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\ICollection;
 use MetaModels\Filter\Setting\Simple;
 use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\SimpleQuery;
 use MetaModels\Filter\Rules\StaticIdList;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Published setting handler for checkboxes.
@@ -45,15 +47,20 @@ class Published extends Simple
     /**
      * Constructor - initialize the object and store the parameters.
      *
-     * @param ICollection $collection The parenting filter settings object.
-     *
-     * @param array       $data       The attributes for this filter setting.
-     *
-     * @param Connection  $connection The database connection.
+     * @param ICollection                   $collection       The parenting filter settings object.
+     * @param array                         $data             The attributes for this filter setting.
+     * @param Connection                    $connection       The database connection.
+     * @param EventDispatcherInterface|null $dispatcher       The event dispatcher.
+     * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
      */
-    public function __construct(ICollection $collection, array $data, Connection $connection = null)
-    {
-        parent::__construct($collection, $data);
+    public function __construct(
+        ICollection $collection,
+        array $data,
+        Connection $connection = null,
+        EventDispatcherInterface $dispatcher = null,
+        FilterUrlBuilder $filterUrlBuilder = null
+    ) {
+        parent::__construct($collection, $data, $dispatcher, $filterUrlBuilder);
 
         if (null === $connection) {
             // @codingStandardsIgnoreStart Silencing errors is discouraged

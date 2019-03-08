@@ -22,7 +22,9 @@
 namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
 use Doctrine\DBAL\Connection;
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Attribute type factory for published filter settings.
@@ -37,12 +39,31 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
     private $connection;
 
     /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
+     * The filter URL builder.
+     *
+     * @var FilterUrlBuilder
+     */
+    private $filterUrlBuilder;
+
+    /**
      * Create a new instance.
      *
-     * @param Connection $connection Databse connection.
+     * @param Connection                    $connection       The database connection.
+     * @param EventDispatcherInterface|null $dispatcher       The event dispatcher.
+     * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
      */
-    public function __construct(Connection $connection)
-    {
+    public function __construct(
+        Connection $connection,
+        EventDispatcherInterface $dispatcher = null,
+        FilterUrlBuilder $filterUrlBuilder = null
+    ) {
         parent::__construct();
 
         $this
@@ -51,7 +72,9 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
             ->setTypeClass(Published::class)
             ->allowAttributeTypes('checkbox');
 
-        $this->connection = $connection;
+        $this->connection       = $connection;
+        $this->dispatcher       = $dispatcher;
+        $this->filterUrlBuilder = $filterUrlBuilder;
     }
 
     /**
@@ -59,9 +82,12 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
      */
     public function createInstance($information, $filterSettings)
     {
-        // $this->typeClass is private and there is no getter...
-        $typeClass = Published::class;
-
-        return new $typeClass($filterSettings, $information, $this->connection);
+        return new Published(
+            $filterSettings,
+            $information,
+            $this->connection,
+            $this->dispatcher,
+            $this->filterUrlBuilder
+        );
     }
 }
