@@ -14,6 +14,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
+ * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -21,6 +22,7 @@
 
 namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Doctrine\DBAL\Connection;
 use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
@@ -53,16 +55,25 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
     private $filterUrlBuilder;
 
     /**
+     * The token checker.
+     *
+     * @var TokenChecker
+     */
+    private $tokenChecker;
+
+    /**
      * Create a new instance.
      *
      * @param Connection                    $connection       The database connection.
      * @param EventDispatcherInterface|null $dispatcher       The event dispatcher.
      * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
+     * @param TokenChecker|null             $tokenChecker     The token checker.
      */
     public function __construct(
         Connection $connection,
         EventDispatcherInterface $dispatcher = null,
-        FilterUrlBuilder $filterUrlBuilder = null
+        FilterUrlBuilder $filterUrlBuilder = null,
+        TokenChecker $tokenChecker = null
     ) {
         parent::__construct();
 
@@ -75,6 +86,7 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
         $this->connection       = $connection;
         $this->dispatcher       = $dispatcher;
         $this->filterUrlBuilder = $filterUrlBuilder;
+        $this->tokenChecker     = $tokenChecker;
     }
 
     /**
@@ -87,7 +99,8 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
             $information,
             $this->connection,
             $this->dispatcher,
-            $this->filterUrlBuilder
+            $this->filterUrlBuilder,
+            $this->tokenChecker
         );
     }
 }
