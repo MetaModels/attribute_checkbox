@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +15,15 @@
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use MetaModels\Filter\FilterUrlBuilder;
@@ -45,6 +47,13 @@ class Published extends Simple
     private $connection;
 
     /**
+     * The token checker.
+     *
+     * @var TokenChecker
+     */
+    private $tokenChecker;
+
+    /**
      * Constructor - initialize the object and store the parameters.
      *
      * @param ICollection                   $collection       The parenting filter settings object.
@@ -52,13 +61,15 @@ class Published extends Simple
      * @param Connection                    $connection       The database connection.
      * @param EventDispatcherInterface|null $dispatcher       The event dispatcher.
      * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
+     * @param TokenChecker|null             $tokenChecker     The token checker.
      */
     public function __construct(
         ICollection $collection,
         array $data,
         Connection $connection = null,
         EventDispatcherInterface $dispatcher = null,
-        FilterUrlBuilder $filterUrlBuilder = null
+        FilterUrlBuilder $filterUrlBuilder = null,
+        TokenChecker $tokenChecker = null
     ) {
         parent::__construct($collection, $data, $dispatcher, $filterUrlBuilder);
 
@@ -73,7 +84,8 @@ class Published extends Simple
             $connection = System::getContainer()->get('database_connection');
         }
 
-        $this->connection = $connection;
+        $this->connection   = $connection;
+        $this->tokenChecker = $tokenChecker;
     }
 
     /**
@@ -86,7 +98,7 @@ class Published extends Simple
         }
 
         // Skip filter when in front end preview.
-        if ($this->get('check_allowpreview') && BE_USER_LOGGED_IN) {
+        if ($this->get('check_allowpreview') && ($this->tokenChecker && $this->tokenChecker->isPreviewMode())) {
             return;
         }
 
