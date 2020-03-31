@@ -23,7 +23,6 @@
 
 namespace MetaModels\AttributeCheckboxBundle\FilterSetting;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use MetaModels\Filter\FilterUrlBuilder;
@@ -47,13 +46,6 @@ class Published extends Simple
     private $connection;
 
     /**
-     * The token checker.
-     *
-     * @var TokenChecker
-     */
-    private $tokenChecker;
-
-    /**
      * Constructor - initialize the object and store the parameters.
      *
      * @param ICollection                   $collection       The parenting filter settings object.
@@ -61,15 +53,13 @@ class Published extends Simple
      * @param Connection                    $connection       The database connection.
      * @param EventDispatcherInterface|null $dispatcher       The event dispatcher.
      * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
-     * @param TokenChecker|null             $tokenChecker     The token checker.
      */
     public function __construct(
         ICollection $collection,
         array $data,
         Connection $connection = null,
         EventDispatcherInterface $dispatcher = null,
-        FilterUrlBuilder $filterUrlBuilder = null,
-        TokenChecker $tokenChecker = null
+        FilterUrlBuilder $filterUrlBuilder = null
     ) {
         parent::__construct($collection, $data, $dispatcher, $filterUrlBuilder);
 
@@ -84,8 +74,7 @@ class Published extends Simple
             $connection = System::getContainer()->get('database_connection');
         }
 
-        $this->connection   = $connection;
-        $this->tokenChecker = $tokenChecker;
+        $this->connection = $connection;
     }
 
     /**
@@ -98,7 +87,7 @@ class Published extends Simple
         }
 
         // Skip filter when in front end preview.
-        if ($this->get('check_allowpreview') && ($this->tokenChecker && $this->tokenChecker->isPreviewMode())) {
+        if ($this->get('check_allowpreview') && BE_USER_LOGGED_IN) {
             return;
         }
 
