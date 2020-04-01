@@ -22,18 +22,18 @@
 
 // Fields.
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']       = 'Checkbox';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][0]              = 'Publishing icon';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][0]              = 'Toggle icon';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][1]              =
-    'If this is selected, you will get the default publishing icon ("eye") in the backend list view.';
+    'If this is selected, you will get a toggle icon ("eye") in the backend list view.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse'][0]              = 'Inverse';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse'][1]              =
-    'If this is selected, the published mode will get inverted (like Contao content elements).';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'][0]             = 'Own list view icon';
+    'If this is selected, the toggle mode will get inverted (enabled checkbox shows inactive icon, disabled checkbox shows active icon).';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'][0]             = 'Custom icon image';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview'][1]             =
-    'If this is selected, you will get an own additional icon in the backend list view.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon'][0]         = 'List view icon enabled';
+    'If this is selected, you can customize the icon in the backend list view.';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon'][0]         = 'Icon for enabled state';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon'][1]         =
     'The icon which is shown in the backend list view if item enabled.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled'][0] = 'List view icon disabled';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled'][0] = 'Icon for disabled state';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled'][1] =
     'The icon which is shown in the backend list view if item disabled.';
