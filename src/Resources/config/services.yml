@@ -13,6 +13,5 @@ services:
           - '@database_connection'
           - '@event_dispatcher'
           - '@MetaModels\Filter\FilterUrlBuilder'
-          - '@contao.security.token_checker'
         tags:
           - { name: metamodels.filter_factory }
