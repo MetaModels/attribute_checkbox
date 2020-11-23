@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,8 @@
  * @author     Christopher Boelter <c.boelter@cogizz.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -31,6 +32,7 @@ use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleComma
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
+use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
@@ -46,13 +48,23 @@ class BuildMetaModelOperationsListener
     private $scopeMatcher;
 
     /**
+     * The icon builder.
+     *
+     * @var IconBuilder
+     */
+    private $iconBuilder;
+
+    /**
      * CreatePropertyConditionListener constructor.
      *
      * @param RequestScopeDeterminator $scopeMatcher Request scope determinator.
+     *
+     * @param IconBuilder              $iconBuilder  The icon builder.
      */
-    public function __construct(RequestScopeDeterminator $scopeMatcher)
+    public function __construct(RequestScopeDeterminator $scopeMatcher, IconBuilder $iconBuilder)
     {
         $this->scopeMatcher = $scopeMatcher;
+        $this->iconBuilder  = $iconBuilder;
     }
 
     /**
@@ -87,11 +99,12 @@ class BuildMetaModelOperationsListener
         $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
         $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
-        if ($attribute->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path) {
-            $extra['icon']          = $objIconEnabled->path;
-            $extra['icon_disabled'] = $objIconDisabled->path;
-        } else {
-            $extra['icon'] = 'visible.svg';
+        if ($attribute->get('tcheck_listview') == 1 && $objIconEnabled->path) {
+            $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+        }
+
+        if ($attribute->get('tcheck_listview') == 1 && $objIconDisabled->path) {
+            $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
         }
 
         $toggle->setToggleProperty($attribute->getColName());
