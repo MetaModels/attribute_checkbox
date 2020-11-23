@@ -99,11 +99,11 @@ class BuildMetaModelOperationsListener
         $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
         $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
-        if ($attribute->get('tcheck_listview') == 1 && $objIconEnabled->path) {
+        if ($attribute->get('check_listview') == 1 && $objIconEnabled->path) {
             $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
         }
 
-        if ($attribute->get('tcheck_listview') == 1 && $objIconDisabled->path) {
+        if ($attribute->get('check_listview') == 1 && $objIconDisabled->path) {
             $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
         }
 
