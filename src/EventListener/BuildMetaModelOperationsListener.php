@@ -78,7 +78,7 @@ class BuildMetaModelOperationsListener
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    private function buildCommand($attribute, array $propertyData)
+    private function buildCommand(Checkbox $attribute, array $propertyData)
     {
         if ($attribute->get('check_listview') == 1) {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
@@ -94,6 +94,7 @@ class BuildMetaModelOperationsListener
                 $attribute->getName()
             )
         );
+
         $extra           = $toggle->getExtra();
         $extra['icon']   = 'visible.svg';
         $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
@@ -127,7 +128,7 @@ class BuildMetaModelOperationsListener
      *
      * @return Contao2BackendViewDefinition
      */
-    protected function createBackendViewDefinition($container)
+    protected function createBackendViewDefinition(ContainerInterface $container)
     {
         if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
             $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
@@ -155,9 +156,12 @@ class BuildMetaModelOperationsListener
             return;
         }
         $allProps   = $event->getScreen()['properties'];
-        $properties = \array_map(function ($property) {
-            return ($property['col_name'] ?? null);
-        }, $allProps);
+        $properties = \array_map(
+            function ($property) {
+                return ($property['col_name'] ?? null);
+            },
+            $allProps
+        );
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
@@ -166,6 +170,7 @@ class BuildMetaModelOperationsListener
             foreach ($allProps as $prop) {
                 if ($prop['col_name'] === $attribute->getColName()) {
                     $info = $prop;
+                    break;
                 }
             }
 
@@ -194,10 +199,10 @@ class BuildMetaModelOperationsListener
      *
      * @return bool
      */
-    private function wantToAdd($attribute, array $properties): bool
+    private function wantToAdd(IAttribute $attribute, array $properties): bool
     {
         return ($attribute instanceof Checkbox)
-            && (($attribute->get('check_publish') === '1') || ($attribute->get('check_listview') === '1'))
-            && (\in_array($attribute->getColName(), $properties, true));
+               && (($attribute->get('check_publish') === '1') || ($attribute->get('check_listview') === '1'))
+               && (\in_array($attribute->getColName(), $properties, true));
     }
 }
