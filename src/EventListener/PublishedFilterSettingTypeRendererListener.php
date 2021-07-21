@@ -26,6 +26,8 @@ use MetaModels\CoreBundle\EventListener\DcGeneral\Table\FilterSetting\AbstractFi
 
 /**
  * Handles rendering of model from tl_metamodel_filtersetting.
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 class PublishedFilterSettingTypeRendererListener extends AbstractFilterSettingTypeRenderer
 {

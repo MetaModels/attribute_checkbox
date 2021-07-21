@@ -26,6 +26,7 @@ use Doctrine\DBAL\Driver\Statement;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,7 +42,7 @@ class CheckboxTest extends TestCase
      * @param string $language         The language.
      * @param string $fallbackLanguage The fallback language.
      *
-     * @return IMetaModel|\PHPUnit_Framework_MockObject_MockObject
+     * @return IMetaModel|MockObject
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
@@ -72,7 +73,7 @@ class CheckboxTest extends TestCase
      *
      * @param callable|null $callback     Callback which gets mocked statement passed.
      *
-     * @return Connection|\PHPUnit_Framework_MockObject_MockObject
+     * @return Connection|MockObject
      */
     private function mockConnection(callable $callback = null, $expectedQuery = null, $queryMethod = 'prepare')
     {
@@ -124,7 +125,7 @@ class CheckboxTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     * @return TableManipulator|MockObject
      */
     private function mockTableManipulator(Connection $connection)
     {
