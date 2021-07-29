@@ -25,6 +25,7 @@
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['checkbox extends _simpleattribute_'] = [
+    '-advanced' => ['isunique'],
     '+advanced' => ['check_publish', 'check_inverse', 'check_listview']
 ];
 
