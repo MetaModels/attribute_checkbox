@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,8 @@
  * @author     Christopher Boelter <c.boelter@cogizz.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -31,6 +32,7 @@ use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleComma
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
+use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
@@ -46,13 +48,23 @@ class BuildMetaModelOperationsListener
     private $scopeMatcher;
 
     /**
+     * The icon builder.
+     *
+     * @var IconBuilder
+     */
+    private $iconBuilder;
+
+    /**
      * CreatePropertyConditionListener constructor.
      *
      * @param RequestScopeDeterminator $scopeMatcher Request scope determinator.
+     *
+     * @param IconBuilder              $iconBuilder  The icon builder.
      */
-    public function __construct(RequestScopeDeterminator $scopeMatcher)
+    public function __construct(RequestScopeDeterminator $scopeMatcher, IconBuilder $iconBuilder)
     {
         $this->scopeMatcher = $scopeMatcher;
+        $this->iconBuilder  = $iconBuilder;
     }
 
     /**
@@ -66,7 +78,7 @@ class BuildMetaModelOperationsListener
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    private function buildCommand($attribute, array $propertyData)
+    private function buildCommand(Checkbox $attribute, array $propertyData)
     {
         if ($attribute->get('check_listview') == 1) {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
@@ -82,16 +94,18 @@ class BuildMetaModelOperationsListener
                 $attribute->getName()
             )
         );
+
         $extra           = $toggle->getExtra();
         $extra['icon']   = 'visible.svg';
         $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
         $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
-        if ($attribute->get('check_listview') == 1 && $objIconEnabled->path && $objIconDisabled->path) {
-            $extra['icon']          = $objIconEnabled->path;
-            $extra['icon_disabled'] = $objIconDisabled->path;
-        } else {
-            $extra['icon'] = 'visible.svg';
+        if ($attribute->get('check_listview') == 1 && $objIconEnabled->path) {
+            $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+        }
+
+        if ($attribute->get('check_listview') == 1 && $objIconDisabled->path) {
+            $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
         }
 
         $toggle->setToggleProperty($attribute->getColName());
@@ -114,7 +128,7 @@ class BuildMetaModelOperationsListener
      *
      * @return Contao2BackendViewDefinition
      */
-    protected function createBackendViewDefinition($container)
+    protected function createBackendViewDefinition(ContainerInterface $container)
     {
         if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
             $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
@@ -142,9 +156,12 @@ class BuildMetaModelOperationsListener
             return;
         }
         $allProps   = $event->getScreen()['properties'];
-        $properties = \array_map(function ($property) {
-            return ($property['col_name'] ?? null);
-        }, $allProps);
+        $properties = \array_map(
+            function ($property) {
+                return ($property['col_name'] ?? null);
+            },
+            $allProps
+        );
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
@@ -153,6 +170,7 @@ class BuildMetaModelOperationsListener
             foreach ($allProps as $prop) {
                 if ($prop['col_name'] === $attribute->getColName()) {
                     $info = $prop;
+                    break;
                 }
             }
 
@@ -181,10 +199,10 @@ class BuildMetaModelOperationsListener
      *
      * @return bool
      */
-    private function wantToAdd($attribute, array $properties): bool
+    private function wantToAdd(IAttribute $attribute, array $properties): bool
     {
         return ($attribute instanceof Checkbox)
-            && (($attribute->get('check_publish') === '1') || ($attribute->get('check_listview') === '1'))
-            && (\in_array($attribute->getColName(), $properties, true));
+               && (($attribute->get('check_publish') === '1') || ($attribute->get('check_listview') === '1'))
+               && (\in_array($attribute->getColName(), $properties, true));
     }
 }
