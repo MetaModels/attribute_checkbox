@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,7 +18,8 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -103,8 +104,8 @@ class Checkbox extends BaseSimple
                         $this->getMetaModel()->getTableName()
                     )
                 );
-                while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
-                    $arrCount[$row->$colName] = $row->mm_count;
+                while ($row = $statement->fetchAssociative()) {
+                    $arrCount[$row[$colName]] = $row['mm_count'];
                 }
             }
         }
@@ -131,7 +132,7 @@ class Checkbox extends BaseSimple
         $statement = $this->connection
             ->prepare(
                 \sprintf(
-                    'SELECT id FROM %s WHERE %s = :value',
+                    'SELECT t.id FROM %s as t WHERE t.%s = :value',
                     $this->getMetaModel()->getTableName(),
                     $this->getColName()
                 )
@@ -139,7 +140,7 @@ class Checkbox extends BaseSimple
 
         $statement->execute(['value' => (bool) $strPattern ? '1' : '']);
 
-        $arrIds = $statement->fetchAll(\PDO::FETCH_COLUMN, 'id');
+        $arrIds = $statement->fetchFirstColumn();
         return $arrIds;
     }
 
