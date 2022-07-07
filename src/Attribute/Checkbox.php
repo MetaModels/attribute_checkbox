@@ -130,18 +130,14 @@ class Checkbox extends BaseSimple
     public function searchFor($strPattern)
     {
         $statement = $this->connection
-            ->prepare(
-                \sprintf(
-                    'SELECT t.id FROM %s as t WHERE t.%s = :value',
-                    $this->getMetaModel()->getTableName(),
-                    $this->getColName()
-                )
-            );
+            ->createQueryBuilder()
+            ->select('t.id')
+            ->from($this->getMetaModel()->getTableName(), 't')
+            ->where('t.' . $this->getColName() . '=:value')
+            ->setParameter('value', (bool) $strPattern ? '1' : '')
+            ->executeQuery();
 
-        $statement->execute(['value' => (bool) $strPattern ? '1' : '']);
-
-        $arrIds = $statement->fetchFirstColumn();
-        return $arrIds;
+        return $statement->fetchFirstColumn();
     }
 
     /**
