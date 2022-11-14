@@ -32,6 +32,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Checkbox.
+ *
+ * @covers \MetaModels\AttributeCheckboxBundle\Attribute\Checkbox
  */
 class CheckboxTest extends TestCase
 {
