@@ -3,6 +3,7 @@ services:
         class: MetaModels\AttributeCheckboxBundle\EventListener\BuildMetaModelOperationsListener
         arguments:
           - "@cca.dc-general.scope-matcher"
+          - "@metamodels.assets.icon_builder"
         tags:
           - {
               name: kernel.event_listener,

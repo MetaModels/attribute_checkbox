@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,18 +19,18 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['checkbox extends _simpleattribute_'] = [
+    '-advanced' => ['isunique'],
     '+advanced' => ['check_publish', 'check_inverse', 'check_listview']
 ];
 
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['metasubpalettes'] = [
-    'check_listview' => ['check_listviewicon', 'check_listviewicondisabled']
-];
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['metasubpalettes']['check_listview'] =
+    ['check_listviewicon', 'check_listviewicondisabled'];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'],
@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => [
-        'tl_class' => 'cbx w50'
+        'tl_class' => 'w50 cbx m12'
     ],
 ];
 
@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_inverse'] = [
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => [
-        'tl_class' => 'cbx w50'
+        'tl_class' => 'w50 cbx m12'
     ],
 ];
 
@@ -58,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_listview'] = [
     'inputType' => 'checkbox',
     'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => [
-        'tl_class'       => 'clr cbx w50',
+        'tl_class'       => 'clr w50 cbx m12',
         'submitOnChange' => true
     ],
 ];
