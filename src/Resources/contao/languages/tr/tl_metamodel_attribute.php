@@ -1,26 +1,26 @@
 <?php
 /**
- * Translations are managed using Transifex. To create a new translation
+ * This file is part of MetaModels/attribute_checkbox.
+ *
+ * (c) 2012-2022 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * Translations are managed automatically using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * Last-updated: 2022-11-19T17:23:40+01:00
  *
- * @link https://www.transifex.com/signup/
- * @link https://www.transifex.com/projects/p/$$project$$/language/$$lang$$/
- *
- * last-updated: 2018-02-06T02:49:29+01:00
+ * @copyright 2012-2022 The MetaModels team.
+ * @license   https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
+ * @link      https://www.transifex.com/metamodels/public/
+ * @link      https://www.transifex.com/signup/?join_project=metamodels
  */
 
 
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['0']              = 'Ters';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['1']              = 'Bu seçilirse, yayınlanan mod ters çevrilir (içerik öğeleri gibi).';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']['0']             = 'Liste görünümü onay kutusu';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listview']['1']             = 'Bu seçilirse, arka uç liste görünümünde ek bir simge bulacaksınız.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon']['0']         = 'Liste görünümü simgesi';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicon']['1']         = 'Arka planda liste görünümünde gösterilen simge';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']['0'] = 'Liste görünümü simgesi devre dışı';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_listviewicondisabled']['1'] = 'Liste görünümü simgesi devre dışı ';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['0']              = 'Yayınlama onay kutusu';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['1']              = 'Bu seçilirse, öğeler ön uçlardaki listelerde görünür (yeşil "göz" ü ücretsiz alacaksınız.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox']         = 'Onay Kutusu';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_inverse']['0']      = 'Ters';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['checkbox'] = 'Onay Kutusu';
 
