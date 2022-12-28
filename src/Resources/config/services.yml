@@ -15,3 +15,7 @@ services:
           - '@MetaModels\Filter\FilterUrlBuilder'
         tags:
           - { name: metamodels.filter_factory }
+
+    MetaModels\AttributeCheckboxBundle\Schema\DoctrineSchemaGenerator:
+      tags:
+        - { name: 'metamodels.schema-generator.doctrine' }
