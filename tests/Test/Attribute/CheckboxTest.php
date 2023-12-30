@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2023 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2023 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -47,22 +47,22 @@ class CheckboxTest extends TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
+        $metaModel = $this->getMockBuilder(IMetaModel::class)->getMock();
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTableName')
-            ->will($this->returnValue('mm_unittest'));
+            ->willReturn('mm_unittest');
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -70,13 +70,13 @@ class CheckboxTest extends TestCase
     /**
      * Mock the Contao database.
      *
-     * @param string|null   expectedQuery The query to expect.
-     *
-     * @param callable|null $callback     Callback which gets mocked statement passed.
+     * @param callable|null $callback      Callback which gets mocked statement passed.
+     * @param null          $expectedQuery Query.
+     * @param string        $queryMethod   Query methode.
      *
      * @return Connection|MockObject
      */
-    private function mockConnection(callable $callback = null, $expectedQuery = null, $queryMethod = 'prepare')
+    private function mockConnection(callable $callback = null, $expectedQuery = null, string $queryMethod = 'prepare')
     {
         $mockDb = $this
             ->getMockBuilder(Connection::class)
@@ -128,7 +128,7 @@ class CheckboxTest extends TestCase
      *
      * @return TableManipulator|MockObject
      */
-    private function mockTableManipulator(Connection $connection)
+    private function mockTableManipulator(Connection $connection): MockObject|TableManipulator
     {
         return $this->getMockBuilder(TableManipulator::class)
             ->setConstructorArgs([$connection, []])
@@ -177,6 +177,8 @@ class CheckboxTest extends TestCase
      * @return void
      *
      * @dataProvider searchForProvider
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function testSearchFor($expectedParameter, $searchValue)
     {
@@ -186,8 +188,9 @@ class CheckboxTest extends TestCase
             function ($statement) {
                 $statement
                     ->expects($this->once())
+                    ->method('fetchFirstColumn')
                     ->method('fetchAll')
-                    ->with(\PDO::FETCH_COLUMN, 'id')
+                    //->with(\PDO::FETCH_COLUMN, 'id')
                     ->willReturn(['success']);
             },
             'SELECT id FROM mm_unittest WHERE testcol = :value'
