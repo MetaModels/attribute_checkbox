@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2023 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2023 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -28,6 +28,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2Ba
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
 use MetaModels\Attribute\IAttribute;
@@ -37,6 +38,8 @@ use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class BuildMetaModelOperationsListener
 {
@@ -157,7 +160,7 @@ class BuildMetaModelOperationsListener
         }
         $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(
-            static function ($property) {
+            static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps
@@ -168,13 +171,13 @@ class BuildMetaModelOperationsListener
             }
             $info = [];
             foreach ($allProps as $prop) {
-                /** @var IAttribute $attribute */
-                if (($property['col_name'] ?? null) === $attribute->getColName()) {
+                /** @var Checkbox $attribute */
+                if (($prop['col_name'] ?? null) === $attribute->getColName()) {
                     $info = $prop;
                     break;
                 }
             }
-
+            /** @var Checkbox $attribute */
             assert($attribute instanceof Checkbox);
             $toggle    = $this->buildCommand($attribute, $info);
             $container = $event->getContainer();

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2023 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2023 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -89,9 +89,13 @@ class Checkbox extends BaseSimple
      */
     public function getFilterOptions($idList, $usedOnly, &$arrCount = null)
     {
-        $values = parent::getFilterOptions($idList, $usedOnly, $arrCount);
-        // If not used only or id list, we need to override the handling now.
-        if (!($idList || $usedOnly)) {
+        // If empty list, return empty result.
+        if ([] === ($values = parent::getFilterOptions($idList, $usedOnly, $arrCount))) {
+            return [];
+        }
+
+        // If not used only, we need to override the handling now.
+        if (!$usedOnly) {
             $values = ['', '1'];
             if (null !== $arrCount) {
                 $arrCount[''] = 0;
@@ -123,7 +127,7 @@ class Checkbox extends BaseSimple
     /**
      * Search all items that match the given expression.
      *
-     * @param string $strPattern The text to search for - this value will get cast to a boolean expession.
+     * @param string $strPattern The text to search for - this value will get cast to a boolean expression.
      *
      * @return list<string> the ids of matching items.
      */

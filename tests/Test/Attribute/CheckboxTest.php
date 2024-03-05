@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2023 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2023 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -24,6 +24,8 @@ namespace MetaModels\AttributeCheckboxBundle\Test\Attribute;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Result;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
@@ -71,34 +73,26 @@ class CheckboxTest extends TestCase
      * Mock the Contao database.
      *
      * @param callable|null $callback      Callback which gets mocked statement passed.
-     * @param null          $expectedQuery Query.
-     * @param string        $queryMethod   Query methode.
+     * @param string|null   $expectedQuery Query.
      *
      * @return Connection|MockObject
      */
-    private function mockConnection(callable $callback = null, $expectedQuery = null, string $queryMethod = 'prepare')
+    private function mockConnection(callable $callback = null, string $expectedQuery = null): Connection|MockObject
     {
-        $mockDb = $this
-            ->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $statement = $this
-            ->getMockBuilder(Statement::class)
-            ->getMock();
+        $mockDb        = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $statement     = $this->getMockBuilder(Statement::class)->getMock();
+        $result        = $this->getMockBuilder(Result::class)->disableOriginalConstructor()->getMock();
+        $selectBuilder = $this->getMockBuilder(QueryBuilder::class)->disableOriginalConstructor()->getMock();
 
         $mockDb->method('prepare')->willReturn($statement);
-        $mockDb->method('query')->willReturn($statement);
+        $mockDb->method('executeQuery')->willReturn($result);
 
         if ($callback) {
             \call_user_func($callback, $statement);
         }
 
-        if (!$expectedQuery || $expectedQuery === 'prepare') {
-            $mockDb->expects($this->never())->method('query');
-        }
-
-        if (!$expectedQuery || $expectedQuery === 'query') {
+        if (!$expectedQuery) {
+            $mockDb->expects($this->never())->method('executeQuery');
             $mockDb->expects($this->never())->method('prepare');
         }
 
@@ -108,15 +102,13 @@ class CheckboxTest extends TestCase
 
         $mockDb
             ->expects($this->once())
-            ->method($queryMethod)
+            ->method('prepare')
             ->with($expectedQuery);
 
-        if ($queryMethod === 'prepare') {
-            $statement
-                ->expects($this->once())
-                ->method('execute')
-                ->willReturn(true);
-        }
+        $selectBuilder
+            ->expects(self::once())
+            ->method('executeQuery')
+            ->willReturn(true);
 
         return $mockDb;
     }
@@ -189,11 +181,9 @@ class CheckboxTest extends TestCase
                 $statement
                     ->expects($this->once())
                     ->method('fetchFirstColumn')
-                    ->method('fetchAll')
-                    //->with(\PDO::FETCH_COLUMN, 'id')
                     ->willReturn(['success']);
             },
-            'SELECT id FROM mm_unittest WHERE testcol = :value'
+            'SELECT t.id FROM mm_unittest t WHERE t.testcol = :value'
         );
         $manipulator = $this->mockTableManipulator($connection);
 
