@@ -88,6 +88,10 @@ class Published extends Simple
             return;
         }
 
+        if (null === $this->connection) {
+            return;
+        }
+
         // Skip filter when in front end preview.
         $tokenChecker = System::getContainer()->get('contao.security.token_checker');
         assert($tokenChecker instanceof TokenChecker);
@@ -100,29 +104,28 @@ class Published extends Simple
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
-        assert($objAttribute instanceof IAttribute);
+
+        // No attribute found, do not return anything.
+        if (null === $objAttribute) {
+            $objFilter->addFilterRule(new StaticIdList([]));
+
+            return;
+        }
 
         $publishedValue = 1;
         if ((int) $objAttribute->get('check_inverse') === 1) {
             $publishedValue = '';
         }
 
-        if ($objAttribute) {
-            $objFilter->addFilterRule(SimpleQuery::createFromQueryBuilder(
-                $this
-                    ->connection
-                    ->createQueryBuilder()
-                    ->select('id')
-                    ->from($this->getMetaModel()->getTableName(), 't')
-                    ->where('t.' . $objAttribute->getColName() . '=:value')
-                    ->setParameter('value', $publishedValue)
-            ));
-
-            return;
-        }
-
-        // No attribute found, do not return anything.
-        $objFilter->addFilterRule(new StaticIdList([]));
+        $objFilter->addFilterRule(SimpleQuery::createFromQueryBuilder(
+            $this
+                ->connection
+                ->createQueryBuilder()
+                ->select('id')
+                ->from($this->getMetaModel()->getTableName(), 't')
+                ->where('t.' . $objAttribute->getColName() . '=:value')
+                ->setParameter('value', $publishedValue)
+        ));
     }
 
     /**

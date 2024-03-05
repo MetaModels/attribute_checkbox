@@ -125,7 +125,7 @@ class Checkbox extends BaseSimple
      *
      * @param string $strPattern The text to search for - this value will get cast to a boolean expession.
      *
-     * @return int[] the ids of matching items.
+     * @return list<string> the ids of matching items.
      */
     public function searchFor($strPattern)
     {
@@ -137,7 +137,13 @@ class Checkbox extends BaseSimple
             ->setParameter('value', (bool) $strPattern ? '1' : '')
             ->executeQuery();
 
-        return $statement->fetchFirstColumn();
+        // Return value ist list<mixed>, parent function wants a list<string> so we make a cast.
+        $list = $statement->fetchFirstColumn();
+        if (!empty($list)) {
+            $list = array_map('strval', $list);
+        }
+
+        return $list;
     }
 
     /**

@@ -175,6 +175,7 @@ class BuildMetaModelOperationsListener
                 }
             }
 
+            assert($attribute instanceof Checkbox);
             $toggle    = $this->buildCommand($attribute, $info);
             $container = $event->getContainer();
             $view      = $this->createBackendViewDefinition($container);
