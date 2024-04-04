@@ -50,6 +50,7 @@ class DoctrineSchemaGenerator extends AbstractAttributeTypeSchemaGenerator
             'default'         => '',
             'notnull'         => true,
             'platformOptions' => [
+                'charset'   => 'ascii',
                 'collation' => 'ascii_bin'
             ],
         ]);
