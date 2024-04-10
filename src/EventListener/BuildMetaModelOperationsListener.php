@@ -129,12 +129,13 @@ class BuildMetaModelOperationsListener
      *
      * @param ContainerInterface $container The container.
      *
-     * @return Contao2BackendViewDefinition
+     * @return Contao2BackendViewDefinitionInterface
      */
     protected function createBackendViewDefinition(ContainerInterface $container)
     {
         if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
             $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
+            assert($view instanceof Contao2BackendViewDefinitionInterface);
         } else {
             $view = new Contao2BackendViewDefinition();
             $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
@@ -171,14 +172,12 @@ class BuildMetaModelOperationsListener
             }
             $info = [];
             foreach ($allProps as $prop) {
-                /** @var Checkbox $attribute */
                 if (($prop['col_name'] ?? null) === $attribute->getColName()) {
                     $info = $prop;
                     break;
                 }
             }
             /** @var Checkbox $attribute */
-            assert($attribute instanceof Checkbox);
             $toggle    = $this->buildCommand($attribute, $info);
             $container = $event->getContainer();
             $view      = $this->createBackendViewDefinition($container);

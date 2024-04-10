@@ -141,13 +141,8 @@ class Checkbox extends BaseSimple
             ->setParameter('value', (bool) $strPattern ? '1' : '')
             ->executeQuery();
 
-        // Return value ist list<mixed>, parent function wants a list<string> so we make a cast.
-        $list = $statement->fetchFirstColumn();
-        if (!empty($list)) {
-            $list = array_map('strval', $list);
-        }
-
-        return $list;
+        // Return value list as list<mixed>, parent function wants a list<string> so we make a cast.
+        return array_map(static fn (mixed $value) => (string) $value, $statement->fetchFirstColumn());
     }
 
     /**
