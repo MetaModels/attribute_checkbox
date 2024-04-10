@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -23,7 +23,11 @@
 namespace MetaModels\AttributeCheckboxBundle\Test\Attribute;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Statement;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
@@ -47,22 +51,22 @@ class CheckboxTest extends TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
+        $metaModel = $this->getMockBuilder(IMetaModel::class)->getMock();
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTableName')
-            ->will($this->returnValue('mm_unittest'));
+            ->willReturn('mm_unittest');
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -70,55 +74,25 @@ class CheckboxTest extends TestCase
     /**
      * Mock the Contao database.
      *
-     * @param string|null   expectedQuery The query to expect.
+     * @param array $methods The method names to mock.
      *
-     * @param callable|null $callback     Callback which gets mocked statement passed.
-     *
-     * @return Connection|MockObject
+     * @return Connection&MockObject
      */
-    private function mockConnection(callable $callback = null, $expectedQuery = null, $queryMethod = 'prepare')
+    private function mockConnection(array $methods = []): Connection&MockObject
     {
-        $mockDb = $this
-            ->getMockBuilder(Connection::class)
+        $connection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
+            ->onlyMethods(\array_merge($methods, ['getDatabasePlatform']))
             ->getMock();
 
-        $statement = $this
-            ->getMockBuilder(Statement::class)
-            ->getMock();
+        $platform = $this
+            ->getMockBuilder(AbstractPlatform::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+            ->getMockForAbstractClass();
+        $connection->method('getDatabasePlatform')->willReturn($platform);
 
-        $mockDb->method('prepare')->willReturn($statement);
-        $mockDb->method('query')->willReturn($statement);
-
-        if ($callback) {
-            \call_user_func($callback, $statement);
-        }
-
-        if (!$expectedQuery || $expectedQuery === 'prepare') {
-            $mockDb->expects($this->never())->method('query');
-        }
-
-        if (!$expectedQuery || $expectedQuery === 'query') {
-            $mockDb->expects($this->never())->method('prepare');
-        }
-
-        if (!$expectedQuery) {
-            return $mockDb;
-        }
-
-        $mockDb
-            ->expects($this->once())
-            ->method($queryMethod)
-            ->with($expectedQuery);
-
-        if ($queryMethod === 'prepare') {
-            $statement
-                ->expects($this->once())
-                ->method('execute')
-                ->willReturn(true);
-        }
-
-        return $mockDb;
+        return $connection;
     }
 
     /**
@@ -126,9 +100,9 @@ class CheckboxTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|MockObject
+     * @return TableManipulator&MockObject
      */
-    private function mockTableManipulator(Connection $connection)
+    private function mockTableManipulator(Connection $connection): MockObject&TableManipulator
     {
         return $this->getMockBuilder(TableManipulator::class)
             ->setConstructorArgs([$connection, []])
@@ -177,22 +151,41 @@ class CheckboxTest extends TestCase
      * @return void
      *
      * @dataProvider searchForProvider
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function testSearchFor($expectedParameter, $searchValue)
     {
         $metaModel = $this->mockMetaModel('en', 'en');
-
-        $connection  = $this->mockConnection(
-            function ($statement) {
-                $statement
-                    ->expects($this->once())
-                    ->method('fetchAll')
-                    ->with(\PDO::FETCH_COLUMN, 'id')
-                    ->willReturn(['success']);
-            },
-            'SELECT id FROM mm_unittest WHERE testcol = :value'
-        );
+        $connection   = $this->mockConnection(['createQueryBuilder']);
         $manipulator = $this->mockTableManipulator($connection);
+
+        $result = $this
+            ->getMockBuilder(Result::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['fetchFirstColumn'])
+            ->getMock();
+
+        $result
+            ->expects(self::once())
+            ->method('fetchFirstColumn')
+            ->willReturn(['success']);
+
+        $builder = $this
+            ->getMockBuilder(QueryBuilder::class)
+            ->setConstructorArgs([$connection])
+            ->getMock();
+
+        $builder->expects(self::once())->method('select')->with('t.id')->willReturn($builder);
+        $builder->expects(self::once())->method('from')->with('mm_unittest', 't')->willReturn($builder);
+        $builder->expects(self::once())->method('where')->with('t.testcol=:value')->willReturn($builder);
+        $builder->expects(self::once())->method('setParameter')
+            ->with('value', $searchValue ? '1' : '')
+            ->willReturn($builder);
+
+        $builder->expects(self::once())->method('executeQuery')->willReturn($result);
+
+        $connection->expects(self::once())->method('createQueryBuilder')->willReturn($builder);
 
         $checkbox = new Checkbox($metaModel, ['colname' => 'testcol'], $connection, $manipulator);
 

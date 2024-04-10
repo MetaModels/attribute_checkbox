@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2023 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2023 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -25,6 +25,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\DcGeneral\Data\Model;
+use MetaModels\IItem;
 
 /**
  * This class clears the options for checkbox attributes in the frontend.
@@ -38,7 +39,7 @@ class CheckboxOptionsProviderListener
      *
      * @var RequestScopeDeterminator
      */
-    private $scopeMatcher;
+    private RequestScopeDeterminator $scopeMatcher;
 
     /**
      * Create a new instance.
@@ -68,7 +69,13 @@ class CheckboxOptionsProviderListener
             return;
         }
 
-        $attribute = $model->getItem()->getAttribute($event->getPropertyName());
+        $propertyName = $event->getPropertyName();
+        assert(\is_string($propertyName));
+
+        $item = $model->getItem();
+        assert($item instanceof IItem);
+
+        $attribute = $item->getAttribute($propertyName);
 
         // Check if we have a checkbox.
         if (!($attribute instanceof Checkbox)) {

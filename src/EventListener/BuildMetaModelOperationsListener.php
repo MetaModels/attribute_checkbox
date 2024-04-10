@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -28,6 +28,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2Ba
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
 use MetaModels\Attribute\IAttribute;
@@ -37,6 +38,8 @@ use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class BuildMetaModelOperationsListener
 {
@@ -45,20 +48,19 @@ class BuildMetaModelOperationsListener
      *
      * @var RequestScopeDeterminator
      */
-    private $scopeMatcher;
+    private RequestScopeDeterminator $scopeMatcher;
 
     /**
      * The icon builder.
      *
      * @var IconBuilder
      */
-    private $iconBuilder;
+    private IconBuilder $iconBuilder;
 
     /**
      * CreatePropertyConditionListener constructor.
      *
      * @param RequestScopeDeterminator $scopeMatcher Request scope determinator.
-     *
      * @param IconBuilder              $iconBuilder  The icon builder.
      */
     public function __construct(RequestScopeDeterminator $scopeMatcher, IconBuilder $iconBuilder)
@@ -77,10 +79,11 @@ class BuildMetaModelOperationsListener
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function buildCommand(Checkbox $attribute, array $propertyData)
     {
-        if ($attribute->get('check_listview') == 1) {
+        if ($attribute->get('check_listview') === 1) {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
         } else {
             $commandName = 'publishtoggle_' . $attribute->getColName();
@@ -100,17 +103,17 @@ class BuildMetaModelOperationsListener
         $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
         $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
-        if ($attribute->get('check_listview') == 1 && null !== $objIconEnabled && $objIconEnabled->path) {
+        if ($attribute->get('check_listview') === 1 && null !== $objIconEnabled && $objIconEnabled->path) {
             $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
         }
 
-        if ($attribute->get('check_listview') == 1 && null !== $objIconDisabled && $objIconDisabled->path) {
+        if ($attribute->get('check_listview') === 1 && null !== $objIconDisabled && $objIconDisabled->path) {
             $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
         }
 
         $toggle->setToggleProperty($attribute->getColName());
 
-        if ($attribute->get('check_inverse') == 1) {
+        if ($attribute->get('check_inverse') === 1) {
             $toggle->setInverse(true);
         }
 
@@ -126,12 +129,13 @@ class BuildMetaModelOperationsListener
      *
      * @param ContainerInterface $container The container.
      *
-     * @return Contao2BackendViewDefinition
+     * @return Contao2BackendViewDefinitionInterface
      */
     protected function createBackendViewDefinition(ContainerInterface $container)
     {
         if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
             $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
+            assert($view instanceof Contao2BackendViewDefinitionInterface);
         } else {
             $view = new Contao2BackendViewDefinition();
             $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
@@ -157,7 +161,7 @@ class BuildMetaModelOperationsListener
         }
         $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(
-            function ($property) {
+            static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps
@@ -168,12 +172,12 @@ class BuildMetaModelOperationsListener
             }
             $info = [];
             foreach ($allProps as $prop) {
-                if (($property['col_name'] ?? null) === $attribute->getColName()) {
+                if (($prop['col_name'] ?? null) === $attribute->getColName()) {
                     $info = $prop;
                     break;
                 }
             }
-
+            /** @var Checkbox $attribute */
             $toggle    = $this->buildCommand($attribute, $info);
             $container = $event->getContainer();
             $view      = $this->createBackendViewDefinition($container);

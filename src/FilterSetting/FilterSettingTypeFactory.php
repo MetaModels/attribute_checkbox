@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2023 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,8 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
- * @copyright  2012-2020 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2023 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -37,21 +38,21 @@ class FilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
      *
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * The event dispatcher.
      *
-     * @var EventDispatcherInterface
+     * @var EventDispatcherInterface|null
      */
-    private $dispatcher;
+    private ?EventDispatcherInterface $dispatcher;
 
     /**
      * The filter URL builder.
      *
-     * @var FilterUrlBuilder
+     * @var FilterUrlBuilder|null
      */
-    private $filterUrlBuilder;
+    private ?FilterUrlBuilder $filterUrlBuilder;
 
     /**
      * Create a new instance.
