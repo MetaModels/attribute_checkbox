@@ -17,4 +17,5 @@ composer.lock
 
 # build
 build/
+.phpcq
 .phpunit.result.cache
