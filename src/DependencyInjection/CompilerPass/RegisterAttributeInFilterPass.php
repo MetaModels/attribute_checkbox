@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/attribute_text
  * @author     David Molineus <david.molineus@netzmacht.de>
+ * @author     Ingolf Steinhardt <info@e-spin.de>
  * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_text/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -34,6 +35,12 @@ class RegisterAttributeInFilterPass implements CompilerPassInterface
         if ($container->hasDefinition('metamodels.filter_setting_factory.simplelookup')) {
             $container
                 ->getDefinition('metamodels.filter_setting_factory.simplelookup')
+                ->addMethodCall('addKnownAttributeType', ['checkbox']);
+        }
+
+        if ($container->hasDefinition('metamodels.filter_setting_factory.select')) {
+            $container
+                ->getDefinition('metamodels.filter_setting_factory.select')
                 ->addMethodCall('addKnownAttributeType', ['checkbox']);
         }
     }
