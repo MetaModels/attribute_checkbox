@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -28,22 +28,24 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['checkbox_publi
     ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_ignorepublished'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
+    'label'       => 'check_ignorepublished.label',
+    'description' => 'check_ignorepublished.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'sql'         => 'char(1) NOT NULL default \'\'',
+    'eval'        => [
         'alwaysSave' => true,
         'tl_class'   => 'w50 m12',
     ],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
+    'label'       => 'check_allowpreview.label',
+    'description' => 'check_allowpreview.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'sql'         => 'char(1) NOT NULL default \'\'',
+    'eval'        => [
         'alwaysSave' => true,
         'tl_class'   => 'w50 m12',
     ],
