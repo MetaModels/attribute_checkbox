@@ -103,17 +103,17 @@ class BuildMetaModelOperationsListener
         $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
         $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
 
-        if ($attribute->get('check_listview') === 1 && null !== $objIconEnabled && $objIconEnabled->path) {
+        if ($attribute->get('check_listview') === '1' && null !== $objIconEnabled && $objIconEnabled->path) {
             $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
         }
 
-        if ($attribute->get('check_listview') === 1 && null !== $objIconDisabled && $objIconDisabled->path) {
+        if ($attribute->get('check_listview') === '1' && null !== $objIconDisabled && $objIconDisabled->path) {
             $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
         }
 
         $toggle->setToggleProperty($attribute->getColName());
 
-        if ($attribute->get('check_inverse') === 1) {
+        if ($attribute->get('check_inverse') === '1') {
             $toggle->setInverse(true);
         }
 
