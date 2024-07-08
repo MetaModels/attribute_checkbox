@@ -98,7 +98,7 @@ class Published extends Simple
 
         if (
             $this->get('check_allowpreview')
-            && $tokenChecker->hasBackendUser()
+            && $tokenChecker->isPreviewMode()
         ) {
             return;
         }
