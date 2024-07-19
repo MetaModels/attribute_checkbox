@@ -17,6 +17,12 @@
       <trans-unit id="typenames.checkbox_published" resname="typenames.checkbox_published">
         <source>Published state</source>
       </trans-unit>
+      <trans-unit id="ignore_published.label" resname="ignore_published.label">
+        <source>Ignore checkbox field %name%</source>
+      </trans-unit>
+      <trans-unit id="ignore_published.description" resname="ignore_published.description">
+        <source>If you check this, the checkbox condition for attribute %name% will not be enforced in the filter at frontend.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

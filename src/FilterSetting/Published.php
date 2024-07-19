@@ -35,6 +35,7 @@ use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\SimpleQuery;
 use MetaModels\Filter\Rules\StaticIdList;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Published setting handler for checkboxes.
@@ -148,18 +149,25 @@ class Published extends Simple
             return [];
         }
 
-        $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
-        assert($objAttribute instanceof IAttribute);
+        $attribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
+        assert($attribute instanceof IAttribute);
 
-        $arrLabel = [];
-        foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
-            $arrLabel[] = \sprintf($strLabel, $objAttribute->getName());
-        }
+        $translator = System::getContainer()->get('translator');
+        assert($translator instanceof TranslatorInterface);
 
         return [
             'ignore_published' . $this->get('id') => [
-                'label'   => $arrLabel,
-                'inputType'    => 'checkbox',
+                'label' => $translator->trans(
+                    'ignore_published.label',
+                    ['name' => $attribute->getName()],
+                    'tl_metamodel_filtersetting'
+                ),
+                'description' => $translator->trans(
+                    'ignore_published.description',
+                    ['name' => $attribute->getName()],
+                    'tl_metamodel_filtersetting'
+                ),
+                'inputType' => 'checkbox',
             ]
         ];
     }
