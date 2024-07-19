@@ -2,6 +2,9 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_filtersetting.en.xlf">
     <body>
+      <trans-unit id="typenames.checkbox_published" resname="typenames.checkbox_published">
+        <source>Published state</source>
+      </trans-unit>
       <trans-unit id="check_ignorepublished.label" resname="check_ignorepublished.label">
         <source>Allow parameter override</source>
       </trans-unit>
@@ -13,9 +16,6 @@
       </trans-unit>
       <trans-unit id="check_allowpreview.description" resname="check_allowpreview.description">
         <source>If you check this, this filter will not get applied when an user is in &quot;Front end preview&quot; and has the option &quot;show unpublished items&quot; active.</source>
-      </trans-unit>
-      <trans-unit id="typenames.checkbox_published" resname="typenames.checkbox_published">
-        <source>Published state</source>
       </trans-unit>
       <trans-unit id="ignore_published.label" resname="ignore_published.label">
         <source>Ignore checkbox field %name%</source>
