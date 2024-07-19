@@ -124,7 +124,6 @@ class Checkbox extends BaseSimple
         foreach ($values as $value) {
             $mapped[(string) $value] =
                 $translator->trans('value_' . ($value ?: '0'), [], 'metamodels_default');
-                //$GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['value_' . ($value ?: '0')];
         }
 
         return $mapped;

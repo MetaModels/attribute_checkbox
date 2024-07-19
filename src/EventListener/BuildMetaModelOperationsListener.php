@@ -98,7 +98,7 @@ class BuildMetaModelOperationsListener
         $toggle->setName($commandName);
         $toggle->setLabel($translator->trans('toggle.label', [], 'metamodels_default'));
         $toggle->setDescription(
-            $translator->trans('toggle.label', ['name' => $attribute->getName()], 'metamodels_default')
+            $translator->trans('toggle.description', ['name' => $attribute->getName()], 'metamodels_default')
         );
 
         $extra           = $toggle->getExtra();
