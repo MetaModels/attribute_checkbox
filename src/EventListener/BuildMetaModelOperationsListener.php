@@ -24,6 +24,7 @@
 namespace MetaModels\AttributeCheckboxBundle\EventListener;
 
 use Contao\FilesModel;
+use Contao\System;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
@@ -35,6 +36,7 @@ use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
@@ -88,14 +90,15 @@ class BuildMetaModelOperationsListener
         } else {
             $commandName = 'publishtoggle_' . $attribute->getColName();
         }
+
+        $translator = System::getContainer()->get('translator');
+        assert($translator instanceof TranslatorInterface);
+
         $toggle = new ToggleCommand();
         $toggle->setName($commandName);
-        $toggle->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][0]);
+        $toggle->setLabel($translator->trans('toggle.label', [], 'metamodels_default'));
         $toggle->setDescription(
-            \sprintf(
-                $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][1],
-                $attribute->getName()
-            )
+            $translator->trans('toggle.description', ['name' => $attribute->getName()], 'metamodels_default')
         );
 
         $extra           = $toggle->getExtra();

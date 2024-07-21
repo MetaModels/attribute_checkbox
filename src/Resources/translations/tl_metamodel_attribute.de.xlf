@@ -1,0 +1,50 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf" target-language="de">
+    <body>
+      <trans-unit id="typeOptions.checkbox" resname="typeOptions.checkbox">
+        <source>Checkbox</source>
+        <target>Checkbox</target>
+      </trans-unit>
+      <trans-unit id="check_publish.label" resname="check_publish.label">
+        <source>Toggle icon</source>
+        <target>Wechselicon</target>
+      </trans-unit>
+      <trans-unit id="check_publish.description" resname="check_publish.description">
+        <source>If this is selected, you will get a toggle icon (&quot;eye&quot;) in the backend list view.</source>
+        <target>Ist diese Option gesetzt, wird ein zusätzliches Icon (&quot;Auge&quot;) in der Listenanzeige des Backends eingefügt.</target>
+      </trans-unit>
+      <trans-unit id="check_inverse.label" resname="check_inverse.label">
+        <source>Inverse</source>
+        <target>Invertierte Anzeigeoption</target>
+      </trans-unit>
+      <trans-unit id="check_inverse.description" resname="check_inverse.description">
+        <source>If this is selected, the toggle mode will get inverted (enabled checkbox shows inactive icon, disabled checkbox shows active icon).</source>
+        <target>Wenn dies ausgewählt ist, wird der Umschaltmodus umgekehrt (aktiviertes Kontrollkästchen zeigt inaktives Symbol, deaktiviertes Kontrollkästchen zeigt aktives Symbol).</target>
+      </trans-unit>
+      <trans-unit id="check_listview.label" resname="check_listview.label">
+        <source>Custom icon image</source>
+        <target>Benutzerdefiniertes Icon</target>
+      </trans-unit>
+      <trans-unit id="check_listview.description" resname="check_listview.description">
+        <source>If this is selected, you can customize the icon in the backend list view.</source>
+        <target>Wenn diese Option ausgewählt ist, können Sie das Icon in der Backend-Listenansicht anpassen.</target>
+      </trans-unit>
+      <trans-unit id="check_listviewicon.label" resname="check_listviewicon.label">
+        <source>Icon for enabled state</source>
+        <target>Icon Aktiv</target>
+      </trans-unit>
+      <trans-unit id="check_listviewicon.description" resname="check_listviewicon.description">
+        <source>The icon which is shown in the backend list view if item enabled.</source>
+        <target>Das Icon, das in der Backend-Listenansicht angezeigt wird, wenn das Element aktiviert ist.</target>
+      </trans-unit>
+      <trans-unit id="check_listviewicondisabled.label" resname="check_listviewicondisabled.label">
+        <source>Icon for disabled state</source>
+        <target>Icon Inaktiv</target>
+      </trans-unit>
+      <trans-unit id="check_listviewicondisabled.description" resname="check_listviewicondisabled.description">
+        <source>The icon which is shown in the backend list view if item disabled.</source>
+        <target>Das Icon, das in der Backend-Listenansicht angezeigt wird, wenn das Element deaktiviert ist.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

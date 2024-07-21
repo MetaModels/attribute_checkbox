@@ -12,6 +12,7 @@
     "MetaModels\\ContaoFrontendEditingBundle\\MetaModelsContaoFrontendEditingBundle",
     "Symfony\\Component\\Config\\FileLocator",
     "Symfony\\Component\\EventDispatcher\\EventDispatcherInterface",
+    "Symfony\\Contracts\\Translation\\TranslatorInterface",
     "tl_user_group"
   ]
 }

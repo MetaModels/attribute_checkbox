@@ -26,7 +26,9 @@
 
 namespace MetaModels\AttributeCheckboxBundle\Attribute;
 
+use Contao\System;
 use MetaModels\Attribute\BaseSimple;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This is the MetaModelAttribute class for handling checkbox fields.
@@ -114,11 +116,14 @@ class Checkbox extends BaseSimple
             }
         }
 
+        $translator = System::getContainer()->get('translator');
+        assert($translator instanceof TranslatorInterface);
+
         // Finally use the correct language strings.
         $mapped = [];
         foreach ($values as $value) {
             $mapped[(string) $value] =
-                $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['value_' . ($value ?: '0')];
+                $translator->trans('value_' . ($value ?: '0'), [], 'metamodels_default');
         }
 
         return $mapped;

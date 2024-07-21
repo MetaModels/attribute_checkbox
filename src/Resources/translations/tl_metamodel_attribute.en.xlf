@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf">
+    <body>
+      <trans-unit id="typeOptions.checkbox" resname="typeOptions.checkbox">
+        <source>Checkbox</source>
+      </trans-unit>
+      <trans-unit id="check_publish.label" resname="check_publish.label">
+        <source>Toggle icon</source>
+      </trans-unit>
+      <trans-unit id="check_publish.description" resname="check_publish.description">
+        <source>If this is selected, you will get a toggle icon (&quot;eye&quot;) in the backend list view.</source>
+      </trans-unit>
+      <trans-unit id="check_inverse.label" resname="check_inverse.label">
+        <source>Inverse</source>
+      </trans-unit>
+      <trans-unit id="check_inverse.description" resname="check_inverse.description">
+        <source>If this is selected, the toggle mode will get inverted (enabled checkbox shows inactive icon, disabled checkbox shows active icon).</source>
+      </trans-unit>
+      <trans-unit id="check_listview.label" resname="check_listview.label">
+        <source>Custom icon image</source>
+      </trans-unit>
+      <trans-unit id="check_listview.description" resname="check_listview.description">
+        <source>If this is selected, you can customize the icon in the backend list view.</source>
+      </trans-unit>
+      <trans-unit id="check_listviewicon.label" resname="check_listviewicon.label">
+        <source>Icon for enabled state</source>
+      </trans-unit>
+      <trans-unit id="check_listviewicon.description" resname="check_listviewicon.description">
+        <source>The icon which is shown in the backend list view if item enabled.</source>
+      </trans-unit>
+      <trans-unit id="check_listviewicondisabled.label" resname="check_listviewicondisabled.label">
+        <source>Icon for disabled state</source>
+      </trans-unit>
+      <trans-unit id="check_listviewicondisabled.description" resname="check_listviewicondisabled.description">
+        <source>The icon which is shown in the backend list view if item disabled.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
