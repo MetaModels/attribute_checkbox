@@ -118,15 +118,17 @@ class Published extends Simple
             $publishedValue = '';
         }
 
-        $objFilter->addFilterRule(SimpleQuery::createFromQueryBuilder(
-            $this
-                ->connection
-                ->createQueryBuilder()
-                ->select('id')
-                ->from($this->getMetaModel()->getTableName(), 't')
-                ->where('t.' . $objAttribute->getColName() . '=:value')
-                ->setParameter('value', $publishedValue)
-        ));
+        $objFilter->addFilterRule(
+            SimpleQuery::createFromQueryBuilder(
+                $this
+                    ->connection
+                    ->createQueryBuilder()
+                    ->select('id')
+                    ->from($this->getMetaModel()->getTableName(), 't')
+                    ->where('t.' . $objAttribute->getColName() . '=:value')
+                    ->setParameter('value', $publishedValue)
+            )
+        );
     }
 
     /**
@@ -157,7 +159,7 @@ class Published extends Simple
 
         return [
             'ignore_published' . $this->get('id') => [
-                'label' => $translator->trans(
+                'label'       => $translator->trans(
                     'ignore_published.label',
                     ['name' => $attribute->getName()],
                     'tl_metamodel_filtersetting'
@@ -167,7 +169,7 @@ class Published extends Simple
                     ['name' => $attribute->getName()],
                     'tl_metamodel_filtersetting'
                 ),
-                'inputType' => 'checkbox',
+                'inputType'   => 'checkbox',
             ]
         ];
     }
