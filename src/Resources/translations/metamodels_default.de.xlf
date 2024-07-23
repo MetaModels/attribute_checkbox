@@ -6,8 +6,8 @@
         <target>Wechseln</target>
       </trans-unit>
       <trans-unit id="toggle.description" resname="toggle.description">
-        <source>Toggle the state of attribute %name% for this item</source>
-        <target>Wechselt den Status des Attributs %name% für diesen Datensatz.</target>
+        <source>Toggle the state of attribute %id% for this item</source>
+        <target>Wechselt den Status des Attributs %id% für diesen Datensatz.</target>
       </trans-unit>
       <trans-unit id="checkbox.value_0" resname="checkbox.value_0">
         <source>Inactive</source>
