@@ -6,7 +6,7 @@
         <source>Toggle</source>
       </trans-unit>
       <trans-unit id="toggle.description" resname="toggle.description">
-        <source>Toggle the state of attribute %name% for this item</source>
+        <source>Toggle the state of attribute %id% for this item</source>
       </trans-unit>
       <trans-unit id="checkbox.value_0" resname="checkbox.value_0">
         <source>Inactive</source>
