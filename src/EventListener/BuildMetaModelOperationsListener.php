@@ -24,7 +24,6 @@
 namespace MetaModels\AttributeCheckboxBundle\EventListener;
 
 use Contao\FilesModel;
-use Contao\System;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
@@ -36,7 +35,6 @@ use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeCheckboxBundle\Attribute\Checkbox;
 use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
@@ -78,40 +76,31 @@ class BuildMetaModelOperationsListener
      * @param array    $propertyData The property date from the input screen property.
      *
      * @return ToggleCommandInterface
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function buildCommand(Checkbox $attribute, array $propertyData)
+    private function buildCommand(Checkbox $attribute, array $propertyData, string $prefix)
     {
-        if ($attribute->get('check_listview') === 1) {
+        if ($attribute->get('check_listview') === '1') {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
         } else {
             $commandName = 'publishtoggle_' . $attribute->getColName();
         }
 
-        $translator = System::getContainer()->get('translator');
-        assert($translator instanceof TranslatorInterface);
-
         $toggle = new ToggleCommand();
         $toggle->setName($commandName);
-        $toggle->setLabel($translator->trans('toggle.label', [], 'metamodels_default'));
-        $toggle->setDescription(
-            $translator->trans('toggle.description', ['name' => $attribute->getName()], 'metamodels_default')
-        );
+        $toggle->setLabel($prefix . $commandName . '.label');
+        $toggle->setDescription($prefix . $commandName . '.description');
 
-        $extra           = $toggle->getExtra();
-        $extra['icon']   = 'visible.svg';
-        $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
-        $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
-
-        if ($attribute->get('check_listview') === '1' && null !== $objIconEnabled && $objIconEnabled->path) {
-            $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
-        }
-
-        if ($attribute->get('check_listview') === '1' && null !== $objIconDisabled && $objIconDisabled->path) {
-            $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
+        $extra         = $toggle->getExtra();
+        $extra['icon'] = 'visible.svg';
+        if ($attribute->get('check_listview') === '1') {
+            $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
+            $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
+            if (null !== $objIconEnabled && $objIconEnabled->path) {
+                $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+            }
+            if (null !== $objIconDisabled && $objIconDisabled->path) {
+                $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
+            }
         }
 
         $toggle->setToggleProperty($attribute->getColName());
@@ -162,13 +151,15 @@ class BuildMetaModelOperationsListener
         if (!$this->scopeMatcher->currentScopeIsBackend()) {
             return;
         }
-        $allProps   = $event->getScreen()['properties'];
-        $properties = \array_map(
+        $inputScreen = $event->getScreen();
+        $allProps    = $inputScreen['properties'];
+        $properties  = \array_map(
             static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps
         );
+        $prefix      = 'inputscreen.' . $inputScreen['meta']['id'] . '.';
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
@@ -181,7 +172,7 @@ class BuildMetaModelOperationsListener
                 }
             }
             /** @var Checkbox $attribute */
-            $toggle    = $this->buildCommand($attribute, $info);
+            $toggle    = $this->buildCommand($attribute, $info, $prefix);
             $container = $event->getContainer();
             $view      = $this->createBackendViewDefinition($container);
 
