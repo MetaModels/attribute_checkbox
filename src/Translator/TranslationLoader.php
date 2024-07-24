@@ -63,8 +63,8 @@ final class TranslationLoader implements LoaderInterface
 
         foreach ($this->builder->fetchAllInputScreensForTable($domain) as $inputScreen) {
             foreach (
-                $this->loadInputScreen($metaModel, $inputScreen, $locale, $mainLanguage, $domain)->all($domain) as
-                $key => $value
+                $this->loadInputScreen($metaModel, $inputScreen, $locale, $mainLanguage, $domain)
+                     ->all($domain) as $key => $value
             ) {
                 $catalog->set($key, $value, $domain);
             }
@@ -134,11 +134,11 @@ final class TranslationLoader implements LoaderInterface
                && (in_array($attribute->getColName(), $properties, true));
     }
 
-    private function getName(IAttribute $attribute, string $locale, $mainLanguage)
+    private function getName(IAttribute $attribute, string $locale, string $mainLanguage): string
     {
-        $colName     = $attribute->getColName();
-        $name        = $attribute->get('name') ?? $colName;
-        $description = $attribute->get('description') ?? '';
+        $colName = $attribute->getColName();
+        $name    = $attribute->get('name') ?? $colName;
+
         return $this->extractLangString($name, $locale, $mainLanguage) ?? $colName;
     }
 
