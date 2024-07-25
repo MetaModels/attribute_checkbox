@@ -2,8 +2,8 @@
   <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_filtersetting.en.xlf" target-language="de">
     <body>
       <trans-unit id="typenames.checkbox_published" resname="typenames.checkbox_published">
-        <source>Published state</source>
-        <target>Veröffentlichungsstatus</target>
+        <source>Checkbox state</source>
+        <target>Checkbox-Status</target>
       </trans-unit>
       <trans-unit id="check_ignorepublished.label" resname="check_ignorepublished.label">
         <source>Allow parameter override</source>
@@ -18,8 +18,8 @@
         <target>Filter nicht in Frontendvorschau nutzen</target>
       </trans-unit>
       <trans-unit id="check_allowpreview.description" resname="check_allowpreview.description">
-        <source>If you check this, this filter will not get applied when an user is in &quot;Front end preview&quot; and has the option &quot;show unpublished items&quot; active.</source>
-        <target>Falls ausgewählt, wird dieser Filter nicht benutzt, wenn ein Benutzer die Frontend-Vorschau nutzt. Die Option &quot;Unveröffentlichte Elemente anzeigen&quot; wird nicht ignoriert.</target>
+        <source>If you check this, this filter will not get applied when a user is in &quot;Front end preview&quot; and has the option &quot;show unpublished items&quot; active.</source>
+        <target>Falls ausgewählt, wird dieser Filter übergangen, wenn ein Benutzer die Frontend-Vorschau nutzt. Die Option &quot;Unveröffentlichte Elemente anzeigen&quot; wird ignoriert.</target>
       </trans-unit>
       <trans-unit id="ignore_published.label" resname="ignore_published.label">
         <source>Ignore checkbox field %name%</source>
