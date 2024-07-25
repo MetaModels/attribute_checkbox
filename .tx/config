@@ -1,12 +1,12 @@
 [main]
 host = https://app.transifex.com
 
-[o:metamodels:p:attribute-checkbox:r:metamodels_default]
-file_filter            = src/Resources/translations/metamodels_default.<lang>.xlf
-source_file            = src/Resources/translations/metamodels_default.en.xlf
+[o:metamodels:p:attribute-checkbox:r:metamodel_checkbox]
+file_filter            = src/Resources/translations/metamodel_checkbox.<lang>.xlf
+source_file            = src/Resources/translations/metamodel_checkbox.en.xlf
 type                   = XLIFF
 minimum_perc           = 0
-resource_name          = metamodels_default
+resource_name          = metamodel_checkbox
 replace_edited_strings = false
 keep_translations      = false
 
