@@ -123,7 +123,7 @@ class Checkbox extends BaseSimple
         $mapped = [];
         foreach ($values as $value) {
             $mapped[(string) $value] =
-                $translator->trans('value_' . ($value ?: '0'), [], 'metamodel_checkbox');
+                $translator->trans('checkbox.value_' . ($value ?: '0'), [], 'metamodel_checkbox');
         }
 
         return $mapped;
