@@ -1,0 +1,34 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_filtersetting.en.xlf" target-language="fr">
+    <body>
+      <trans-unit id="typenames.checkbox_published" resname="typenames.checkbox_published">
+        <source>Checkbox state</source>
+        <target>État de la case à cocher</target>
+      </trans-unit>
+      <trans-unit id="check_ignorepublished.label" resname="check_ignorepublished.label">
+        <source>Allow parameter override</source>
+        <target>Autoriser la surcharge des paramètres</target>
+      </trans-unit>
+      <trans-unit id="check_ignorepublished.description" resname="check_ignorepublished.description">
+        <source>If you check this, filter parameters may override this setting.</source>
+        <target>Si coché, les filtres de paramètres pourront surcharger ce réglage.</target>
+      </trans-unit>
+      <trans-unit id="check_allowpreview.label" resname="check_allowpreview.label">
+        <source>Ignore filter in preview mode</source>
+        <target>Ignorer le filtre en mode preview</target>
+      </trans-unit>
+      <trans-unit id="check_allowpreview.description" resname="check_allowpreview.description">
+        <source>If you check this, this filter will not get applied when a user is in &quot;Front end preview&quot; and has the option &quot;show unpublished items&quot; active.</source>
+        <target>Si coché, ce filtre ne sera pas appliqué pour un utilisateur accédant au Font end en mode preview avec l'option &quot;afficher les éléments masqués&quot; activée.</target>
+      </trans-unit>
+      <trans-unit id="ignore_published.label" resname="ignore_published.label">
+        <source>Ignore checkbox field %name%</source>
+        <target>Ignorer la case à cocher du champs %name%</target>
+      </trans-unit>
+      <trans-unit id="ignore_published.description" resname="ignore_published.description">
+        <source>If you check this, the checkbox condition for attribute %name% will not be enforced in the filter at frontend.</source>
+        <target>Si coché, la condition de la case à cocher pour l'attribut %name% ne sera pas appliquée pour le filtre en Frontend.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
