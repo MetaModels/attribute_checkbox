@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,14 +18,17 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeCheckboxBundle\Attribute;
 
+use Contao\System;
 use MetaModels\Attribute\BaseSimple;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This is the MetaModelAttribute class for handling checkbox fields.
@@ -39,7 +42,7 @@ class Checkbox extends BaseSimple
      */
     public function isPublishedField()
     {
-        return $this->get('check_publish') == 1;
+        return $this->get('check_publish') === 1;
     }
 
     /**
@@ -88,32 +91,39 @@ class Checkbox extends BaseSimple
      */
     public function getFilterOptions($idList, $usedOnly, &$arrCount = null)
     {
-        $values = parent::getFilterOptions($idList, $usedOnly, $arrCount);
-        // If not used only or id list, we need to override the handling now.
-        if (!($idList || $usedOnly)) {
+        // If empty list, return empty result.
+        if ([] === ($values = parent::getFilterOptions($idList, $usedOnly, $arrCount))) {
+            return [];
+        }
+
+        // If not used only, we need to override the handling now.
+        if (!$usedOnly) {
             $values = ['', '1'];
             if (null !== $arrCount) {
                 $arrCount[''] = 0;
                 $arrCount[1]  = 0;
                 $colName      = $this->getColName();
-                $statement    = $this->connection->query(
+                $statement    = $this->connection->executeQuery(
                     \sprintf(
                         'SELECT %1$s, COUNT(%1$s) as mm_count FROM %2$s GROUP BY %1$s ORDER BY %1$s',
                         $colName,
                         $this->getMetaModel()->getTableName()
                     )
                 );
-                while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
-                    $arrCount[$row->$colName] = $row->mm_count;
+                while ($row = $statement->fetchAssociative()) {
+                    $arrCount[$row[$colName]] = $row['mm_count'];
                 }
             }
         }
+
+        $translator = System::getContainer()->get('translator');
+        assert($translator instanceof TranslatorInterface);
 
         // Finally use the correct language strings.
         $mapped = [];
         foreach ($values as $value) {
             $mapped[(string) $value] =
-                $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['value_' . ($value ?: '0')];
+                $translator->trans('checkbox.value_' . ($value ?: '0'), [], 'metamodel_checkbox');
         }
 
         return $mapped;
@@ -122,25 +132,22 @@ class Checkbox extends BaseSimple
     /**
      * Search all items that match the given expression.
      *
-     * @param string $strPattern The text to search for - this value will get cast to a boolean expession.
+     * @param string $strPattern The text to search for - this value will get cast to a boolean expression.
      *
-     * @return int[] the ids of matching items.
+     * @return list<string> the ids of matching items.
      */
     public function searchFor($strPattern)
     {
         $statement = $this->connection
-            ->prepare(
-                \sprintf(
-                    'SELECT id FROM %s WHERE %s = :value',
-                    $this->getMetaModel()->getTableName(),
-                    $this->getColName()
-                )
-            );
+            ->createQueryBuilder()
+            ->select('t.id')
+            ->from($this->getMetaModel()->getTableName(), 't')
+            ->where('t.' . $this->getColName() . '=:value')
+            ->setParameter('value', (bool) $strPattern ? '1' : '')
+            ->executeQuery();
 
-        $statement->execute(['value' => (bool) $strPattern ? '1' : '']);
-
-        $arrIds = $statement->fetchAll(\PDO::FETCH_COLUMN, 'id');
-        return $arrIds;
+        // Return value list as list<mixed>, parent function wants a list<string> so we make a cast.
+        return array_map(static fn (mixed $value) => (string) $value, $statement->fetchFirstColumn());
     }
 
     /**
@@ -164,6 +171,6 @@ class Checkbox extends BaseSimple
      */
     public function serializeData($value)
     {
-        return (bool) $value ? '1' : '';
+        return $value ? '1' : '';
     }
 }

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_checkbox.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_checkbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -28,6 +28,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2Ba
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommand;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\ToggleCommandInterface;
 use MetaModels\Attribute\IAttribute;
@@ -37,6 +38,8 @@ use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class BuildMetaModelOperationsListener
 {
@@ -45,20 +48,19 @@ class BuildMetaModelOperationsListener
      *
      * @var RequestScopeDeterminator
      */
-    private $scopeMatcher;
+    private RequestScopeDeterminator $scopeMatcher;
 
     /**
      * The icon builder.
      *
      * @var IconBuilder
      */
-    private $iconBuilder;
+    private IconBuilder $iconBuilder;
 
     /**
      * CreatePropertyConditionListener constructor.
      *
      * @param RequestScopeDeterminator $scopeMatcher Request scope determinator.
-     *
      * @param IconBuilder              $iconBuilder  The icon builder.
      */
     public function __construct(RequestScopeDeterminator $scopeMatcher, IconBuilder $iconBuilder)
@@ -74,43 +76,36 @@ class BuildMetaModelOperationsListener
      * @param array    $propertyData The property date from the input screen property.
      *
      * @return ToggleCommandInterface
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    private function buildCommand(Checkbox $attribute, array $propertyData)
+    private function buildCommand(Checkbox $attribute, array $propertyData, string $prefix)
     {
-        if ($attribute->get('check_listview') == 1) {
+        if ($attribute->get('check_listview') === '1') {
             $commandName = 'listviewtoggle_' . $attribute->getColName();
         } else {
             $commandName = 'publishtoggle_' . $attribute->getColName();
         }
+
         $toggle = new ToggleCommand();
         $toggle->setName($commandName);
-        $toggle->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][0]);
-        $toggle->setDescription(
-            \sprintf(
-                $GLOBALS['TL_LANG']['MSC']['metamodelattribute_checkbox']['toggle'][1],
-                $attribute->getName()
-            )
-        );
+        $toggle->setLabel($prefix . $commandName . '.label');
+        $toggle->setDescription($prefix . $commandName . '.description');
 
-        $extra           = $toggle->getExtra();
-        $extra['icon']   = 'visible.svg';
-        $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
-        $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
-
-        if ($attribute->get('check_listview') == 1 && $objIconEnabled->path) {
-            $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
-        }
-
-        if ($attribute->get('check_listview') == 1 && $objIconDisabled->path) {
-            $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
+        $extra         = $toggle->getExtra();
+        $extra['icon'] = 'visible.svg';
+        if ($attribute->get('check_listview') === '1') {
+            $objIconEnabled  = FilesModel::findByUuid($attribute->get('check_listviewicon'));
+            $objIconDisabled = FilesModel::findByUuid($attribute->get('check_listviewicondisabled'));
+            if (null !== $objIconEnabled && $objIconEnabled->path) {
+                $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+            }
+            if (null !== $objIconDisabled && $objIconDisabled->path) {
+                $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
+            }
         }
 
         $toggle->setToggleProperty($attribute->getColName());
 
-        if ($attribute->get('check_inverse') == 1) {
+        if ($attribute->get('check_inverse') === '1') {
             $toggle->setInverse(true);
         }
 
@@ -126,12 +121,13 @@ class BuildMetaModelOperationsListener
      *
      * @param ContainerInterface $container The container.
      *
-     * @return Contao2BackendViewDefinition
+     * @return Contao2BackendViewDefinitionInterface
      */
     protected function createBackendViewDefinition(ContainerInterface $container)
     {
         if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
             $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
+            assert($view instanceof Contao2BackendViewDefinitionInterface);
         } else {
             $view = new Contao2BackendViewDefinition();
             $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
@@ -155,26 +151,28 @@ class BuildMetaModelOperationsListener
         if (!$this->scopeMatcher->currentScopeIsBackend()) {
             return;
         }
-        $allProps   = $event->getScreen()['properties'];
-        $properties = \array_map(
-            function ($property) {
+        $inputScreen = $event->getScreen();
+        $allProps    = $inputScreen['properties'];
+        $properties  = \array_map(
+            static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps
         );
+        $prefix      = 'inputscreen.' . $inputScreen['meta']['id'] . '.';
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
             }
             $info = [];
             foreach ($allProps as $prop) {
-                if ($prop['col_name'] === $attribute->getColName()) {
+                if (($prop['col_name'] ?? null) === $attribute->getColName()) {
                     $info = $prop;
                     break;
                 }
             }
-
-            $toggle    = $this->buildCommand($attribute, $info);
+            /** @var Checkbox $attribute */
+            $toggle    = $this->buildCommand($attribute, $info, $prefix);
             $container = $event->getContainer();
             $view      = $this->createBackendViewDefinition($container);
 

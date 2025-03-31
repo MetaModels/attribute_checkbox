@@ -15,3 +15,13 @@ services:
           - '@MetaModels\Filter\FilterUrlBuilder'
         tags:
           - { name: metamodels.filter_factory }
+
+    MetaModels\AttributeCheckboxBundle\Schema\DoctrineSchemaGenerator:
+      tags:
+        - { name: 'metamodels.schema-generator.doctrine' }
+
+    MetaModels\AttributeCheckboxBundle\Translator\TranslationLoader:
+      arguments:
+        $baseTranslator: '@contao.translation.translator'
+        $builder: '@metamodels.view_combination.input_screen_information_builder'
+      tags: [ { name: metamodels.translation-loader } ]
